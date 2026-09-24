@@ -1,0 +1,268 @@
+<!-- ============ Firebase SDK via CDN (modular v11) ============ -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
+import { getAuth, signInWithCustomToken, onAuthStateChanged, signOut }
+  from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+import { getFirestore, collection, doc, addDoc, updateDoc, onSnapshot,
+         query, orderBy, serverTimestamp, getDocs, where }
+  from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
+import { getFunctions, httpsCallable }
+  from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-functions.js';
+import { firebaseConfig } from './firebase-config.js';
+
+// ============ INIT FIREBASE ============
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const fns  = getFunctions(app, 'asia-southeast2');
+
+// ============ STATE ============
+let currentUser = null;   // { uid, role, nama, nis, nip, kelas }
+let cases = [];           // cache lokal dari Firestore
+let unsubscribeCases = null;
+
+// ============ LOGIN DENGAN NIS/NIP ============
+async function loginWithNISNIP(identifier, password, role) {
+  try {
+    showToast('⏳ Memverifikasi...', '');
+    const fn = httpsCallable(fns, 'loginWithNISNIP');
+    const { data } = await fn({ identifier, password, role });
+
+    await signInWithCustomToken(auth, data.customToken);
+    // onAuthStateChanged akan menangani redirect UI
+  } catch (err) {
+    console.error(err);
+    const msg = err?.message || 'Login gagal. Periksa NIS/NIP & password.';
+    showToast('❌ ' + msg, 'danger');
+  }
+}
+
+// ============ LISTENER AUTH STATE ============
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    if (unsubscribeCases) { unsubscribeCases(); unsubscribeCases = null; }
+    return;
+  }
+
+  // Ambil custom claims dari ID Token
+  const tokenResult = await user.getIdTokenResult(true);
+  const claims = tokenResult.claims;
+
+  currentUser = {
+    uid: user.uid,
+    role: claims.role || 'siswa',
+    nama: claims.nama || user.displayName || 'Pengguna',
+    nis: claims.nis,
+    nip: claims.nip,
+    kelas: claims.kelas
+  };
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('userAvatar').textContent = currentUser.nama.charAt(0).toUpperCase();
+  document.getElementById('userName').textContent = `${currentUser.nama} (${currentUser.role})`;
+
+  // Sembunyikan tab berdasarkan role
+  applyRoleUI();
+
+  // Mulai listener realtime
+  startCasesListener();
+});
+
+// ============ UI BERDASARKAN ROLE ============
+function applyRoleUI() {
+  const role = currentUser.role;
+  const tabs = document.querySelectorAll('#navTabs button');
+
+  // Pelapor (siswa/guru) hanya lihat Dashboard, Lapor, Kasus (own), Panduan
+  // Satgas ke atas lihat semua
+  const isStaff = ['satgas','kepsek','pusat'].includes(role);
+
+  tabs.forEach(btn => {
+    const t = btn.dataset.tab;
+    if (t === 'lapor' && !['siswa','guru','satgas'].includes(role)) {
+      btn.style.display = 'none';
+    } else {
+      btn.style.display = '';
+    }
+  });
+
+  // Elemen khusus Satgas
+  document.querySelectorAll('.satgas-only').forEach(el => {
+    el.style.display = isStaff ? '' : 'none';
+  });
+}
+
+// ============ REALTIME LISTENER ============
+function startCasesListener() {
+  const q = query(collection(db, 'cases'), orderBy('createdAt', 'desc'));
+  unsubscribeCases = onSnapshot(q, (snap) => {
+    cases = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderAll();
+  }, (err) => {
+    console.error('Firestore listener error:', err);
+    showToast('❌ Gagal memuat data: ' + err.message, 'danger');
+  });
+}
+
+// ============ LOGOUT ============
+window.logout = async function() {
+  if (unsubscribeCases) unsubscribeCases();
+  await signOut(auth);
+  localStorage.removeItem('siap_sr_user_v1');
+};
+
+// ============ SUBMIT REPORT (Firestore) ============
+window.submitReport = async function() {
+  if (!currentUser) { showToast('Harus login terlebih dahulu', 'danger'); return; }
+
+  const vName = document.getElementById('vName').value.trim();
+  const cCategory = document.getElementById('cCategory').value;
+  const cDesc = document.getElementById('cDesc').value.trim();
+
+  if (!vName || !cCategory || !cDesc) {
+    showToast('Mohon lengkapi kolom bertanda *', 'danger');
+    return;
+  }
+
+  const now = Date.now();
+  const newCase = {
+    createdAt: now,
+    createdAtServer: serverTimestamp(),
+    status: 'Baru',
+    riskLevel: document.getElementById('cUrgent').value === 'ya' ? 'berat' : 'ringan',
+    reporterUid: currentUser.uid,
+    reporterName: document.getElementById('rAnon').checked ? 'ANONIM' : (document.getElementById('rName').value.trim() || currentUser.nama),
+    reporterRelation: document.getElementById('rRelation').value,
+    reporterContact: document.getElementById('rContact').value.trim(),
+    anonymous: document.getElementById('rAnon').checked,
+    victim: {
+      name: vName,
+      class: document.getElementById('vClass').value.trim()
+    },
+    category: cCategory,
+    incidentDate: document.getElementById('cDate').value,
+    description: cDesc,
+    urgent: document.getElementById('cUrgent').value === 'ya',
+    slaDeadline: now + (document.getElementById('cUrgent').value === 'ya' ? 24 : 72) * 3600000,
+    assessments: [],
+    interventions: [],
+    escalations: [],
+    timeline: [{
+      ts: now,
+      title: 'Laporan Diterima',
+      desc: `Dilaporkan oleh ${document.getElementById('rName').value.trim() || 'Anonim'}`
+    }]
+  };
+
+  try {
+    await addDoc(collection(db, 'cases'), newCase);
+    showToast('✅ Laporan berhasil dikirim!', 'success');
+
+    // Reset form
+    ['rName','rContact','vName','vClass','cDesc','cDate'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('rAnon').checked = false;
+    document.getElementById('cCategory').value = '';
+    document.getElementById('cUrgent').value = 'tidak';
+
+    document.querySelector('#navTabs button[data-tab="kasus"]').click();
+  } catch (err) {
+    console.error(err);
+    showToast('❌ Gagal mengirim: ' + err.message, 'danger');
+  }
+};
+
+// ============ UPDATE CASE (generic) ============
+async function updateCase(caseId, patch) {
+  const ref = doc(db, 'cases', caseId);
+  await updateDoc(ref, patch);
+}
+
+// Contoh: submitAssessment
+window.submitAssessment = async function(caseId) {
+  const c = cases.find(x => x.id === caseId);
+  if (!c) return;
+
+  const scores = ['a1','a2','a3','a4','a5','a6','a7'].map(k => parseInt(document.getElementById(k).value) || 0);
+  const total = scores.reduce((a,b) => a+b, 0);
+  let risk = 'ringan';
+  if (total >= 10) risk = 'berat';
+  else if (total >= 5) risk = 'sedang';
+
+  const newDeadline = Date.now() + (risk === 'berat' ? 24 : risk === 'sedang' ? 48 : 72) * 3600000;
+
+  await updateCase(caseId, {
+    riskLevel: risk,
+    status: 'Asesmen',
+    slaDeadline: newDeadline,
+    assessments: [...(c.assessments || []), { ts: Date.now(), scores, total, risk, by: currentUser.uid }],
+    timeline: [...(c.timeline || []), {
+      ts: Date.now(),
+      title: `🩺 Asesmen — ${risk.toUpperCase()}`,
+      desc: `Skor ${total}/14. SLA diperbarui.`
+    }]
+  });
+
+  showToast(`✅ Asesmen tersimpan: ${risk.toUpperCase()}`, 'success');
+  openCase(caseId);
+};
+
+window.addIntervention = async function(caseId) {
+  const c = cases.find(x => x.id === caseId);
+  const type = document.getElementById('intType').value;
+  const note = document.getElementById('intNote').value.trim();
+  if (!note) { showToast('Catatan wajib diisi', 'danger'); return; }
+
+  await updateCase(caseId, {
+    status: c.status === 'Asesmen' ? 'Intervensi' : c.status,
+    interventions: [...(c.interventions || []), { ts: Date.now(), type, note, by: currentUser.uid }],
+    timeline: [...(c.timeline || []), {
+      ts: Date.now(), title: `💊 Intervensi: ${type}`, desc: note
+    }]
+  });
+  showToast('✅ Intervensi dicatat', 'success');
+  openCase(caseId);
+};
+
+window.escalate = async function(caseId) {
+  const c = cases.find(x => x.id === caseId);
+  const target = ['Baru','Verifikasi'].includes(c.status) ? 'Kepala Sekolah' : 'Satgas Pusat';
+  const reason = prompt(`Alasan eskalasi ke ${target}:`);
+  if (!reason) return;
+
+  await updateCase(caseId, {
+    escalations: [...(c.escalations || []), { ts: Date.now(), to: target, reason, by: currentUser.uid }],
+    timeline: [...(c.timeline || []), {
+      ts: Date.now(), title: `🔺 Eskalasi ke ${target}`, desc: reason
+    }]
+  });
+  showToast('✅ Dieskalasi ke ' + target, 'success');
+  openCase(caseId);
+};
+
+window.closeCase = async function(caseId) {
+  const note = prompt('Catatan terminasi:');
+  if (!note) return;
+  const c = cases.find(x => x.id === caseId);
+  await updateCase(caseId, {
+    status: 'Terminasi',
+    closedAt: Date.now(),
+    timeline: [...(c.timeline || []), {
+      ts: Date.now(), title: '✅ Terminasi', desc: note
+    }]
+  });
+  showToast('✅ Kasus ditutup', 'success');
+  openCase(caseId);
+};
+
+// ============ FORM LOGIN UI ============
+window.doLogin = async function() {
+  const role = document.getElementById('loginRole').value;
+  const id   = document.getElementById('loginId').value.trim();
+  const pass = document.getElementById('loginPassword').value;
+  if (!id || !pass) { showToast('NIS/NIP & password wajib diisi', 'danger'); return; }
+  await loginWithNISNIP(id, pass, role);
+};
+</script>
