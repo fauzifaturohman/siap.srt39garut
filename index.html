@@ -1,3 +1,1249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIAP SR - Sistem Informasi Aksi Perlindungan Sekolah Rakyat 39 Garut</title>
+<style>
+:root {
+  --maroon: #7A1C2E;
+  --maroon-dark: #5A1322;
+  --maroon-light: #A83048;
+  --orange: #E8A33D;
+  --orange-light: #F5C878;
+  --teal: #2D7A78;
+  --teal-light: #4BA8A5;
+  --red: #C0392B;
+  --green: #27AE60;
+  --blue: #2C5F8D;
+  --cream: #FDF6EE;
+  --peach: #F8E5D6;
+  --gray: #6B7280;
+  --dark: #1F2937;
+  --border: #E5E7EB;
+  --shadow: 0 2px 8px rgba(122,28,46,0.08);
+  --shadow-lg: 0 10px 30px rgba(122,28,46,0.15);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ============ LOGIN ============ */
+#loginScreen 
+  <div id="loginScreen" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#7A1C2E,#5A1322);padding:20px;">
+  <div class="login-card" style="background:white;border-radius:20px;padding:40px;max-width:440px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.3);">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="display:inline-block;background:#7A1C2E;color:white;padding:8px 20px;border-radius:30px;font-weight:700;letter-spacing:1px;font-size:14px;margin-bottom:12px;">SIAP SR</div>
+      <h1 style="font-size:24px;color:#5A1322;margin:0;">Sekolah Rakyat 39 Garut</h1>
+      <p style="color:#6B7280;font-size:13px;margin-top:6px;">Login dengan NIS / NIP</p>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-weight:600;font-size:13px;margin-bottom:5px;">Masuk sebagai</label>
+      <select id="loginRole" style="width:100%;padding:10px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:14px;">
+        <option value="siswa">Siswa (NIS)</option>
+        <option value="guru">Guru / Tenaga Kependidikan (NIP)</option>
+        <option value="satgas">Satgas SR (NIP)</option>
+        <option value="kepsek">Kepala Sekolah (NIP)</option>
+        <option value="pusat">Satgas Pusat (NIP)</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-weight:600;font-size:13px;margin-bottom:5px;">NIS / NIP</label>
+      <input id="loginId" type="text" inputmode="numeric" placeholder="Contoh: 2024001" style="width:100%;padding:10px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:14px;">
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <label style="display:block;font-weight:600;font-size:13px;margin-bottom:5px;">Password</label>
+      <input id="loginPassword" type="password" placeholder="••••••••" style="width:100%;padding:10px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:14px;">
+    </div>
+
+    <button onclick="doLogin()" style="width:100%;padding:12px;background:#7A1C2E;color:white;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;">🔐 Masuk</button>
+
+    <p style="font-size:11px;color:#6B7280;text-align:center;margin-top:14px;">
+      🔒 Data dilindungi &amp; dirahasiakan sesuai Child Safeguarding Policy
+    </p>
+  </div>
+</div>
+.login-card {
+  background: white; border-radius: 20px;
+  padding: 40px; max-width: 480px; width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+.login-logo {
+  text-align: center; margin-bottom: 24px;
+}
+.login-logo .badge {
+  display: inline-block;
+  background: var(--maroon); color: white;
+  padding: 8px 20px; border-radius: 30px;
+  font-weight: 700; letter-spacing: 1px;
+  font-size: 14px; margin-bottom: 12px;
+}
+.login-logo h1 {
+  font-size: 26px; color: var(--maroon-dark); margin-bottom: 6px;
+}
+.login-logo p { color: var(--gray); font-size: 14px; }
+
+.role-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin: 20px 0;
+}
+.role-btn {
+  padding: 14px 10px; border: 2px solid var(--border);
+  background: white; border-radius: 12px; cursor: pointer;
+  font-weight: 600; color: var(--dark); font-size: 13px;
+  transition: all 0.2s; text-align: center;
+}
+.role-btn:hover { border-color: var(--maroon); background: var(--peach); }
+.role-btn.active { border-color: var(--maroon); background: var(--maroon); color: white; }
+.role-btn .icon { display: block; font-size: 22px; margin-bottom: 4px; }
+
+/* ============ APP LAYOUT ============ */
+#app { display: none; }
+header.app-header {
+  background: var(--maroon); color: white;
+  padding: 12px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: var(--shadow);
+  position: sticky; top: 0; z-index: 100;
+  flex-wrap: wrap; gap: 12px;
+}
+.header-brand { display: flex; align-items: center; gap: 12px; }
+.header-brand .logo {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--orange); display: flex; align-items: center;
+  justify-content: center; font-weight: 800; color: var(--maroon-dark);
+  font-size: 16px;
+}
+.header-brand h1 { font-size: 17px; line-height: 1.2; }
+.header-brand small { font-size: 11px; opacity: 0.85; display: block; }
+.header-user {
+  display: flex; align-items: center; gap: 12px; font-size: 13px;
+}
+.header-user .avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--orange); color: var(--maroon-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+}
+.btn-logout {
+  background: rgba(255,255,255,0.15); color: white; border: none;
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px;
+}
+.btn-logout:hover { background: rgba(255,255,255,0.25); }
+
+/* ============ NAV TABS ============ */
+nav.tabs {
+  background: white; border-bottom: 2px solid var(--border);
+  display: flex; overflow-x: auto; padding: 0 16px;
+  position: sticky; top: 66px; z-index: 99;
+}
+nav.tabs button {
+  background: none; border: none; padding: 14px 18px;
+  font-size: 14px; font-weight: 600; color: var(--gray);
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+nav.tabs button:hover { color: var(--maroon); }
+nav.tabs button.active { color: var(--maroon); border-bottom-color: var(--maroon); }
+
+/* ============ MAIN CONTENT ============ */
+main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from {opacity:0; transform:translateY(8px);} to {opacity:1; transform:none;} }
+
+h2.section-title {
+  color: var(--maroon-dark); font-size: 22px; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 10px;
+}
+p.section-sub { color: var(--gray); font-size: 14px; margin-bottom: 20px; }
+
+/* ============ CARDS ============ */
+.card {
+  background: white; border-radius: 14px; padding: 20px;
+  box-shadow: var(--shadow); border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.card-title {
+  font-size: 15px; font-weight: 700; color: var(--maroon-dark);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+
+/* ============ STAT GRID ============ */
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px; margin-bottom: 20px;
+}
+.stat-card {
+  background: white; border-radius: 14px; padding: 18px;
+  border-left: 5px solid var(--maroon);
+  box-shadow: var(--shadow);
+}
+.stat-card .label { font-size: 12px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-card .value { font-size: 30px; font-weight: 800; color: var(--maroon-dark); margin: 4px 0; }
+.stat-card .desc { font-size: 12px; color: var(--gray); }
+.stat-card.orange { border-left-color: var(--orange); }
+.stat-card.orange .value { color: #B5781A; }
+.stat-card.teal { border-left-color: var(--teal); }
+.stat-card.teal .value { color: var(--teal); }
+.stat-card.red { border-left-color: var(--red); }
+.stat-card.red .value { color: var(--red); }
+
+/* ============ FORM ============ */
+.form-group { margin-bottom: 14px; }
+.form-group label {
+  display: block; font-weight: 600; font-size: 13px;
+  color: var(--dark); margin-bottom: 5px;
+}
+.form-group label .req { color: var(--red); }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+  border-radius: 10px; font-size: 14px; font-family: inherit;
+  transition: border 0.2s; background: #FEFEFE;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--maroon);
+  box-shadow: 0 0 0 3px rgba(122,28,46,0.1);
+}
+.form-group textarea { resize: vertical; min-height: 90px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+.checkbox-group {
+  display: flex; align-items: center; gap: 8px; font-size: 14px;
+  padding: 8px 0;
+}
+.checkbox-group input { width: auto; }
+
+/* ============ BUTTONS ============ */
+.btn {
+  padding: 10px 20px; border: none; border-radius: 10px;
+  font-weight: 600; font-size: 14px; cursor: pointer;
+  transition: all 0.2s; font-family: inherit;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: var(--maroon); color: white; }
+.btn-primary:hover { background: var(--maroon-dark); transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn-secondary { background: var(--orange); color: var(--maroon-dark); }
+.btn-secondary:hover { background: var(--orange-light); }
+.btn-outline { background: white; color: var(--maroon); border: 1.5px solid var(--maroon); }
+.btn-outline:hover { background: var(--peach); }
+.btn-danger { background: var(--red); color: white; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-block { width: 100%; justify-content: center; }
+
+/* ============ CASE LIST ============ */
+.filter-bar {
+  display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.filter-bar input, .filter-bar select {
+  padding: 8px 12px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-size: 13px; font-family: inherit;
+}
+.filter-bar input { flex: 1; min-width: 180px; }
+
+.case-item {
+  background: white; border-radius: 12px; padding: 16px;
+  box-shadow: var(--shadow); border: 1px solid var(--border);
+  margin-bottom: 10px; cursor: pointer;
+  border-left: 5px solid var(--gray);
+  transition: all 0.2s;
+}
+.case-item:hover { transform: translateX(3px); box-shadow: var(--shadow-lg); }
+.case-item.risk-ringan { border-left-color: var(--green); }
+.case-item.risk-sedang { border-left-color: var(--orange); }
+.case-item.risk-berat { border-left-color: var(--red); }
+
+.case-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 8px; gap: 10px; flex-wrap: wrap;
+}
+.case-id { font-weight: 700; color: var(--maroon); font-size: 14px; }
+.case-title { font-weight: 600; font-size: 15px; margin: 4px 0; }
+.case-meta { font-size: 12px; color: var(--gray); }
+.case-desc {
+  font-size: 13px; color: var(--dark); margin: 8px 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.badge-ringan { background: #D5F4E1; color: #1B7A3E; }
+.badge-sedang { background: #FCEAC8; color: #A86B00; }
+.badge-berat { background: #FAD5D0; color: #A02716; }
+.badge-status { background: var(--peach); color: var(--maroon-dark); }
+.badge-sla { background: var(--red); color: white; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+
+/* ============ MODAL ============ */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 200;
+  align-items: flex-start; justify-content: center;
+  padding: 20px; overflow-y: auto;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: white; border-radius: 16px; max-width: 800px;
+  width: 100%; margin: auto; box-shadow: var(--shadow-lg);
+  overflow: hidden; animation: slideUp 0.3s;
+}
+@keyframes slideUp { from{transform:translateY(30px);opacity:0;} to{transform:none;opacity:1;} }
+.modal-header {
+  background: var(--maroon); color: white; padding: 16px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h3 { font-size: 17px; }
+.modal-close {
+  background: rgba(255,255,255,0.2); border: none; color: white;
+  width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+  font-size: 18px; line-height: 1;
+}
+.modal-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
+.modal-footer {
+  padding: 14px 20px; border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;
+}
+
+/* ============ TIMELINE ============ */
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px;
+  width: 2px; background: var(--border);
+}
+.timeline-item { position: relative; margin-bottom: 16px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -24px; top: 5px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--maroon); border: 2px solid white;
+  box-shadow: 0 0 0 2px var(--border);
+}
+.timeline-item .t-time { font-size: 11px; color: var(--gray); font-weight: 600; }
+.timeline-item .t-title { font-weight: 700; font-size: 13px; color: var(--maroon-dark); }
+.timeline-item .t-desc { font-size: 13px; color: var(--dark); }
+
+/* ============ SLA BAR ============ */
+.sla-bar {
+  background: var(--peach); border-radius: 10px; padding: 12px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;
+}
+.sla-bar.warning { background: #FCEAC8; }
+.sla-bar.danger { background: #FAD5D0; animation: pulse 1.5s infinite; }
+.sla-time { font-weight: 800; font-size: 16px; color: var(--maroon-dark); }
+
+/* ============ INFO BOX ============ */
+.info-box {
+  background: var(--peach); border-left: 4px solid var(--orange);
+  padding: 12px 16px; border-radius: 8px; font-size: 13px;
+  margin-bottom: 14px; color: var(--maroon-dark);
+}
+.info-box.danger { background: #FAD5D0; border-left-color: var(--red); }
+.info-box.success { background: #D5F4E1; border-left-color: var(--green); }
+
+/* ============ EMPTY STATE ============ */
+.empty-state {
+  text-align: center; padding: 40px 20px; color: var(--gray);
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.empty-state p { font-size: 14px; }
+
+/* ============ TOAST ============ */
+#toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  background: var(--maroon); color: white; padding: 14px 20px;
+  border-radius: 10px; box-shadow: var(--shadow-lg);
+  font-size: 14px; font-weight: 600;
+  transform: translateY(100px); opacity: 0;
+  transition: all 0.3s;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast.success { background: var(--green); }
+#toast.danger { background: var(--red); }
+
+/* ============ RESPONSIVE ============ */
+@media(max-width: 640px) {
+  main { padding: 14px; }
+  header.app-header { padding: 10px 14px; }
+  .header-brand h1 { font-size: 14px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .stat-card .value { font-size: 24px; }
+  nav.tabs { top: 60px; }
+  .header-user span.uname { display: none; }
+}
+
+/* ============ PRINT ============ */
+@media print {
+  header.app-header, nav.tabs, .btn, .modal-close { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="badge">SIAP SR</div>
+      <h1>Sekolah Rakyat 39 Garut</h1>
+      <p>Sistem Informasi Aksi Perlindungan Peserta Didik</p>
+    </div>
+    <p style="font-size:13px;color:var(--gray);text-align:center;margin-bottom:8px;">
+      Pilih peran Anda untuk melanjutkan:
+    </p>
+    <div class="role-grid" id="roleGrid">
+      <button class="role-btn" data-role="pelapor"><span class="icon">📢</span>Pelapor</button>
+      <button class="role-btn" data-role="satgas"><span class="icon">🛡️</span>Satgas SR</button>
+      <button class="role-btn" data-role="kepsek"><span class="icon">🏫</span>Kepala Sekolah</button>
+      <button class="role-btn" data-role="pusat"><span class="icon">🏛️</span>Satgas Pusat</button>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="login()">Masuk Aplikasi</button>
+    <p style="font-size:11px;color:var(--gray);text-align:center;margin-top:14px;">
+      🔒 Data dilindungi &amp; dirahasiakan sesuai Child Safeguarding Policy
+    </p>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app">
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="logo">SR</div>
+      <div>
+        <h1>SIAP SR</h1>
+        <small>Sekolah Rakyat Terintegrasi 39 Garut</small>
+      </div>
+    </div>
+    <div class="header-user">
+      <div class="avatar" id="userAvatar">P</div>
+      <span class="uname" id="userName">Pelapor</span>
+      <button class="btn-logout" onclick="logout()">Keluar</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="navTabs">
+    <button data-tab="dashboard" class="active">📊 Dashboard</button>
+    <button data-tab="lapor">📢 Lapor Kasus</button>
+    <button data-tab="kasus">📋 Daftar Kasus</button>
+    <button data-tab="panduan">📖 Panduan</button>
+  </nav>
+
+  <main>
+    <!-- DASHBOARD -->
+    <section id="tab-dashboard" class="tab-panel active">
+      <h2 class="section-title">📊 Dashboard Ringkasan</h2>
+      <p class="section-sub">Pantau status penanganan kasus peserta didik secara real-time</p>
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="card">
+        <div class="card-title">⚠️ Kasus Perlu Perhatian Segera (SLA Mendekati Batas)</div>
+        <div id="urgentList"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📈 Distribusi Tingkat Risiko</div>
+        <div id="riskChart"></div>
+      </div>
+    </section>
+
+    <!-- LAPOR -->
+    <section id="tab-lapor" class="tab-panel">
+      <h2 class="section-title">📢 Formulir Pelaporan Kasus</h2>
+      <p class="section-sub">Sampaikan laporan dengan aman, rahasia, dan ramah anak. Identitas Anda akan dilindungi.</p>
+
+      <div class="info-box">
+        <strong>ℹ️ Kanal Pelaporan:</strong> Surat resmi • Kanal daring SETARA • Nomor layanan Satgas SR • Kotak pengaduan • Tatap muka
+      </div>
+
+      <div class="card">
+        <div class="card-title">Identitas Pelapor</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nama Pelapor (opsional)</label>
+            <input type="text" id="rName" placeholder="Nama lengkap">
+          </div>
+          <div class="form-group">
+            <label>Hubungan dengan Korban</label>
+            <select id="rRelation">
+              <option value="Siswa">Siswa</option>
+              <option value="Orang Tua/Wali">Orang Tua/Wali</option>
+              <option value="Guru/Tenaga Kependidikan">Guru/Tenaga Kependidikan</option>
+              <option value="Masyarakat">Masyarakat</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kontak (HP/Email)</label>
+            <input type="text" id="rContact" placeholder="0812xxxx / email@contoh.com">
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end;">
+            <div class="checkbox-group" style="padding-bottom:10px;">
+              <input type="checkbox" id="rAnon">
+              <label for="rAnon" style="margin:0;font-weight:500;">Laporkan secara <b>Anonim</b> (identitas dirahasiakan)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Data Korban / Pihak Terdampak</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nama Korban <span class="req">*</span></label>
+            <input type="text" id="vName" placeholder="Nama lengkap korban" required>
+          </div>
+          <div class="form-group">
+            <label>Kelas / Asrama</label>
+            <input type="text" id="vClass" placeholder="Contoh: X-A / Asrama Putri">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Detail Kasus</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kategori Kasus <span class="req">*</span></label>
+            <select id="cCategory" required>
+              <option value="">-- Pilih Kategori --</option>
+              <option value="Kekerasan Fisik">Kekerasan Fisik</option>
+              <option value="Kekerasan Psikis">Kekerasan Psikis</option>
+              <option value="Kekerasan Seksual">Kekerasan Seksual</option>
+              <option value="Perundungan (Bullying)">Perundungan (Bullying)</option>
+              <option value="Diskriminasi">Diskriminasi</option>
+              <option value="Masalah Keluarga">Masalah Keluarga</option>
+              <option value="Masalah Akademik">Masalah Akademik</option>
+              <option value="Kesehatan Mental">Kesehatan Mental</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tanggal Kejadian</label>
+            <input type="date" id="cDate">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Kronologi / Deskripsi Kejadian <span class="req">*</span></label>
+          <textarea id="cDesc" placeholder="Jelaskan apa yang terjadi, kapan, di mana, dan siapa yang terlibat..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Indikasi Kondisi Darurat?</label>
+          <select id="cUrgent">
+            <option value="tidak">Tidak — Situasi terkendali</option>
+            <option value="ya">Ya — Butuh perlindungan segera (korban dalam bahaya)</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="submitReport()">🚀 Kirim Laporan</button>
+      <p style="font-size:12px;color:var(--gray);text-align:center;margin-top:10px;">
+        Laporan akan langsung diteruskan ke Satgas SR untuk ditindaklanjuti sesuai SLA.
+      </p>
+    </section>
+
+    <!-- DAFTAR KASUS -->
+    <section id="tab-kasus" class="tab-panel">
+      <h2 class="section-title">📋 Daftar Kasus</h2>
+      <p class="section-sub">Kelola dan pantau seluruh kasus yang masuk</p>
+
+      <div class="filter-bar">
+        <input type="text" id="fSearch" placeholder="🔍 Cari ID, nama korban, atau kategori..." oninput="renderCases()">
+        <select id="fStatus" onchange="renderCases()">
+          <option value="">Semua Status</option>
+          <option value="Baru">Baru</option>
+          <option value="Verifikasi">Verifikasi</option>
+          <option value="Asesmen">Asesmen</option>
+          <option value="Intervensi">Intervensi</option>
+          <option value="Monitoring">Monitoring</option>
+          <option value="Terminasi">Terminasi</option>
+          <option value="Rujukan">Rujukan</option>
+        </select>
+        <select id="fRisk" onchange="renderCases()">
+          <option value="">Semua Risiko</option>
+          <option value="ringan">Ringan</option>
+          <option value="sedang">Sedang</option>
+          <option value="berat">Berat</option>
+        </select>
+        <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇️ Export CSV</button>
+      </div>
+
+      <div id="caseList"></div>
+    </section>
+
+    <!-- PANDUAN -->
+    <section id="tab-panduan" class="tab-panel">
+      <h2 class="section-title">📖 Panduan Singkat</h2>
+      <p class="section-sub">Referensi alur &amp; kebijakan sesuai Modul 5 Pencegahan dan Penanganan Kasus</p>
+
+      <div class="card">
+        <div class="card-title">🎯 Arah Kebijakan Utama</div>
+        <p><b>AMAN</b> — Lingkungan Sekolah Rakyat aman bagi peserta didik.</p>
+        <p><b>RAMAH ANAK</b> — Mengedepankan kepentingan terbaik &amp; hak anak.</p>
+        <p><b>INKLUSIF &amp; KONDUSIF</b> — Disiplin positif, anti-kekerasan.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🛡️ 7 Prinsip Pencegahan &amp; Penanganan</div>
+        <ol style="padding-left:22px;font-size:14px;">
+          <li>Non-diskriminasi</li>
+          <li>Kepentingan terbaik peserta didik</li>
+          <li>Partisipasi peserta didik</li>
+          <li>Harkat &amp; martabat</li>
+          <li>Perlindungan, kerahasiaan &amp; keselamatan</li>
+          <li>Keadilan &amp; kesetaraan gender</li>
+          <li>Keberlanjutan pendidikan</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⏱️ Batas Waktu Penanganan (SLA)</div>
+        <p><span class="badge badge-berat">Berat/Kritis</span> ≤ 1 × 24 jam sejak dilaporkan</p>
+        <p><span class="badge badge-sedang">Sedang</span> ≤ 2 × 24 jam sejak dilaporkan</p>
+        <p><span class="badge badge-ringan">Ringan</span> Dicatat &amp; ditindaklanjuti sesuai kebutuhan</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔺 Kapan Wajib Eskalasi ke Satgas Pusat?</div>
+        <ol style="padding-left:22px;font-size:14px;">
+          <li>Melibatkan pegawai, guru, atau tenaga kependidikan</li>
+          <li>Menimbulkan perhatian publik / risiko reputasi</li>
+          <li>Berpotensi / telah masuk ranah hukum</li>
+          <li>Memerlukan intervensi profesional / lintas sektor</li>
+          <li>Termasuk risiko tinggi, darurat, atau kritis</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔗 Alur Penanganan Kasus</div>
+        <p style="font-size:13px;">
+          Fasilitasi Akses → Pendekatan Awal → Asesmen → Perencanaan Intervensi →
+          Pelaksanaan Intervensi → Monitoring &amp; Evaluasi → Terminasi / Rujukan
+        </p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- MODAL DETAIL KASUS -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Detail Kasus</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   SIAP SR - Aplikasi Penanganan Kasus Sekolah Rakyat 39 Garut
+   Referensi: Modul 5 Pencegahan dan Penanganan Kasus
+   ============================================================ */
+
+const STORAGE_KEY = 'siap_sr_cases_v1';
+const USER_KEY = 'siap_sr_user_v1';
+
+let currentUser = null;
+let cases = [];
+let selectedRole = null;
+
+/* ============ STORAGE ============ */
+function loadCases() {
+  try { cases = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e) { cases = []; }
+}
+function saveCases() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cases));
+}
+
+/* ============ LOGIN ============ */
+document.getElementById('roleGrid').addEventListener('click', e => {
+  const btn = e.target.closest('.role-btn');
+  if (!btn) return;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedRole = btn.dataset.role;
+});
+
+function login() {
+  if (!selectedRole) { showToast('Silakan pilih peran terlebih dahulu', 'danger'); return; }
+  const roleNames = {
+    pelapor: 'Pelapor / Masyarakat',
+    satgas: 'Satgas SR',
+    kepsek: 'Kepala Sekolah',
+    pusat: 'Satgas Pusat'
+  };
+  currentUser = {
+    role: selectedRole,
+    name: roleNames[selectedRole],
+    initial: roleNames[selectedRole].charAt(0).toUpperCase()
+  };
+  localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('userAvatar').textContent = currentUser.initial;
+  document.getElementById('userName').textContent = currentUser.name;
+  loadCases();
+  renderAll();
+}
+
+function logout() {
+  localStorage.removeItem(USER_KEY);
+  location.reload();
+}
+
+/* ============ TABS ============ */
+document.getElementById('navTabs').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#navTabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  if (btn.dataset.tab === 'dashboard') renderDashboard();
+  if (btn.dataset.tab === 'kasus') renderCases();
+});
+
+/* ============ UTIL ============ */
+function formatDate(ts) {
+  if (!ts) return '-';
+  return new Date(ts).toLocaleString('id-ID', {
+    day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
+  });
+}
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const m = Math.floor(diff/60000);
+  if (m < 1) return 'baru saja';
+  if (m < 60) return m + ' menit lalu';
+  const h = Math.floor(m/60);
+  if (h < 24) return h + ' jam lalu';
+  return Math.floor(h/24) + ' hari lalu';
+}
+function genId() {
+  const y = new Date().getFullYear();
+  const n = (cases.length + 1).toString().padStart(4,'0');
+  return `SR39-${y}-${n}`;
+}
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = type + ' show';
+  setTimeout(() => t.className = type, 3000);
+}
+
+/* ============ SUBMIT REPORT ============ */
+function submitReport() {
+  const vName = document.getElementById('vName').value.trim();
+  const cCategory = document.getElementById('cCategory').value;
+  const cDesc = document.getElementById('cDesc').value.trim();
+
+  if (!vName || !cCategory || !cDesc) {
+    showToast('Mohon lengkapi kolom bertanda *', 'danger');
+    return;
+  }
+
+  const now = Date.now();
+  const slaHours = 24; // default, akan di-recalc setelah asesmen
+
+  const newCase = {
+    id: genId(),
+    createdAt: now,
+    status: 'Baru',
+    riskLevel: 'ringan',
+    reporter: {
+      name: document.getElementById('rName').value.trim() || 'Anonim',
+      relation: document.getElementById('rRelation').value,
+      contact: document.getElementById('rContact').value.trim(),
+      anonymous: document.getElementById('rAnon').checked
+    },
+    victim: {
+      name: vName,
+      class: document.getElementById('vClass').value.trim()
+    },
+    category: cCategory,
+    incidentDate: document.getElementById('cDate').value,
+    description: cDesc,
+    urgent: document.getElementById('cUrgent').value === 'ya',
+    slaDeadline: now + slaHours*3600000,
+    assessments: [],
+    interventions: [],
+    escalations: [],
+    timeline: [
+      { ts: now, title: 'Laporan Diterima', desc: `Dilaporkan oleh ${document.getElementById('rName').value.trim() || 'Anonim'} (${document.getElementById('rRelation').value})` }
+    ]
+  };
+
+  // Auto-klasifikasi awal
+  if (newCase.urgent) {
+    newCase.riskLevel = 'berat';
+    newCase.slaDeadline = now + 24*3600000;
+    newCase.timeline.push({ ts: now, title: '🚨 Indikasi Darurat', desc: 'Ditandai darurat — butuh perlindungan segera (SLA 1×24 jam).' });
+  }
+
+  cases.unshift(newCase);
+  saveCases();
+  showToast('✅ Laporan berhasil dikirim! ID: ' + newCase.id, 'success');
+
+  // reset form
+  ['rName','rContact','vName','vClass','cDesc','cDate'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('rAnon').checked = false;
+  document.getElementById('cCategory').value = '';
+  document.getElementById('cUrgent').value = 'tidak';
+
+  renderAll();
+  document.querySelector('#navTabs button[data-tab="kasus"]').click();
+}
+
+/* ============ RENDER DASHBOARD ============ */
+function renderDashboard() {
+  const total = cases.length;
+  const baru = cases.filter(c => c.status === 'Baru').length;
+  const proses = cases.filter(c => ['Verifikasi','Asesmen','Intervensi','Monitoring'].includes(c.status)).length;
+  const selesai = cases.filter(c => ['Terminasi','Rujukan'].includes(c.status)).length;
+  const darurat = cases.filter(c => {
+    if (['Terminasi','Rujukan'].includes(c.status)) return false;
+    return c.slaDeadline - Date.now() < 6*3600000;
+  }).length;
+
+  document.getElementById('statGrid').innerHTML = `
+    <div class="stat-card">
+      <div class="label">Total Kasus</div>
+      <div class="value">${total}</div>
+      <div class="desc">Seluruh laporan masuk</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="label">Kasus Baru</div>
+      <div class="value">${baru}</div>
+      <div class="desc">Menunggu verifikasi</div>
+    </div>
+    <div class="stat-card teal">
+      <div class="label">Dalam Proses</div>
+      <div class="value">${proses}</div>
+      <div class="desc">Asesmen / intervensi</div>
+    </div>
+    <div class="stat-card red">
+      <div class="label">⚠️ Mendekati SLA</div>
+      <div class="value">${darurat}</div>
+      <div class="desc">Butuh tindakan segera</div>
+    </div>
+  `;
+
+  // Urgent list
+  const urgent = cases.filter(c => !['Terminasi','Rujukan'].includes(c.status))
+    .sort((a,b) => a.slaDeadline - b.slaDeadline).slice(0,5);
+  const urgentEl = document.getElementById('urgentList');
+  if (!urgent.length) {
+    urgentEl.innerHTML = '<div class="empty-state"><div class="icon">✅</div><p>Tidak ada kasus mendesak saat ini.</p></div>';
+  } else {
+    urgentEl.innerHTML = urgent.map(c => {
+      const remain = c.slaDeadline - Date.now();
+      const isOver = remain < 0;
+      const cls = isOver ? 'risk-berat' : (remain < 6*3600000 ? 'risk-sedang' : 'risk-ringan');
+      return `<div class="case-item ${cls}" onclick="openCase('${c.id}')">
+        <div class="case-header">
+          <div>
+            <div class="case-id">${c.id}</div>
+            <div class="case-title">${c.category} — ${c.victim.name}</div>
+          </div>
+          <span class="badge badge-${c.riskLevel}">${c.riskLevel}</span>
+        </div>
+        <div class="case-meta">
+          ${isOver ? '⛔ Melewati SLA' : '⏱️ Sisa: ' + formatRemain(remain)} • Status: ${c.status}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Risk chart
+  const ringan = cases.filter(c => c.riskLevel === 'ringan').length;
+  const sedang = cases.filter(c => c.riskLevel === 'sedang').length;
+  const berat = cases.filter(c => c.riskLevel === 'berat').length;
+  const maxV = Math.max(ringan, sedang, berat, 1);
+  document.getElementById('riskChart').innerHTML = `
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+        <b style="color:var(--green);">🟢 Ringan</b><span>${ringan} kasus</span>
+      </div>
+      <div style="background:#eee;border-radius:8px;height:14px;overflow:hidden;">
+        <div style="height:100%;background:var(--green);width:${(ringan/maxV*100)}%;border-radius:8px;"></div>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+        <b style="color:var(--orange);">🟠 Sedang</b><span>${sedang} kasus</span>
+      </div>
+      <div style="background:#eee;border-radius:8px;height:14px;overflow:hidden;">
+        <div style="height:100%;background:var(--orange);width:${(sedang/maxV*100)}%;border-radius:8px;"></div>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+        <b style="color:var(--red);">🔴 Berat/Kritis</b><span>${berat} kasus</span>
+      </div>
+      <div style="background:#eee;border-radius:8px;height:14px;overflow:hidden;">
+        <div style="height:100%;background:var(--red);width:${(berat/maxV*100)}%;border-radius:8px;"></div>
+      </div>
+    </div>
+  `;
+}
+
+function formatRemain(ms) {
+  if (ms < 0) return 'Terlampaui';
+  const h = Math.floor(ms/3600000);
+  const m = Math.floor((ms%3600000)/60000);
+  if (h >= 24) return Math.floor(h/24) + 'h ' + (h%24) + 'j';
+  return h + 'j ' + m + 'm';
+}
+
+/* ============ RENDER CASES ============ */
+function renderCases() {
+  const q = (document.getElementById('fSearch').value || '').toLowerCase();
+  const fs = document.getElementById('fStatus').value;
+  const fr = document.getElementById('fRisk').value;
+
+  let list = cases.filter(c => {
+    if (fs && c.status !== fs) return false;
+    if (fr && c.riskLevel !== fr) return false;
+    if (q) {
+      const hay = (c.id + ' ' + c.victim.name + ' ' + c.category + ' ' + c.description).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const el = document.getElementById('caseList');
+  if (!list.length) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Belum ada kasus yang sesuai filter.</p></div>';
+    return;
+  }
+
+  el.innerHTML = list.map(c => {
+    const remain = c.slaDeadline - Date.now();
+    const slaCls = ['Terminasi','Rujukan'].includes(c.status) ? '' :
+      (remain < 0 ? 'danger' : (remain < 6*3600000 ? 'warning' : ''));
+    return `<div class="case-item risk-${c.riskLevel}" onclick="openCase('${c.id}')">
+      <div class="case-header">
+        <div>
+          <div class="case-id">${c.id}</div>
+          <div class="case-title">${c.category}</div>
+        </div>
+        <div style="text-align:right;">
+          <span class="badge badge-${c.riskLevel}">${c.riskLevel}</span>
+          <span class="badge badge-status">${c.status}</span>
+        </div>
+      </div>
+      <div class="case-meta">👤 Korban: <b>${c.victim.name}</b>${c.victim.class ? ' • ' + c.victim.class : ''}</div>
+      <div class="case-desc">${escapeHtml(c.description)}</div>
+      <div class="case-meta">
+        🕒 ${timeAgo(c.createdAt)} • ${['Terminasi','Rujukan'].includes(c.status) ? '✅ Selesai' : '⏱️ SLA: ' + formatRemain(remain)}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+/* ============ MODAL DETAIL ============ */
+function openCase(id) {
+  const c = cases.find(x => x.id === id);
+  if (!c) return;
+
+  document.getElementById('modalTitle').textContent = 'Kasus ' + c.id;
+
+  const remain = c.slaDeadline - Date.now();
+  const isDone = ['Terminasi','Rujukan'].includes(c.status);
+  const slaCls = isDone ? '' : (remain < 0 ? 'danger' : (remain < 6*3600000 ? 'warning' : ''));
+
+  let html = `
+    ${!isDone ? `<div class="sla-bar ${slaCls}">
+      <div>⏱️ <b>SLA ${c.riskLevel === 'berat' ? '1×24 jam' : c.riskLevel === 'sedang' ? '2×24 jam' : 'reguler'}</b> — Status: <b>${c.status}</b></div>
+      <div class="sla-time">${remain < 0 ? '⛔ Terlampaui' : formatRemain(remain)}</div>
+    </div>` : `<div class="info-box success">✅ Kasus telah <b>${c.status}</b>.</div>`}
+
+    <div class="form-row">
+      <div>
+        <p style="font-size:12px;color:var(--gray);">TINGKAT RISIKO</p>
+        <span class="badge badge-${c.riskLevel}" style="font-size:13px;padding:6px 14px;">${c.riskLevel.toUpperCase()}</span>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);">KATEGORI</p>
+        <p style="font-weight:700;">${c.category}</p>
+      </div>
+    </div>
+
+    <hr style="margin:14px 0;border:none;border-top:1px solid var(--border);">
+
+    <div class="card" style="box-shadow:none;padding:14px;background:#FAFAFA;">
+      <div class="card-title">👤 Data Korban</div>
+      <p>Nama: <b>${c.victim.name}</b></p>
+      <p>Kelas/Asrama: ${c.victim.class || '-'}</p>
+      ${c.incidentDate ? `<p>Tanggal Kejadian: ${c.incidentDate}</p>` : ''}
+    </div>
+
+    <div class="card" style="box-shadow:none;padding:14px;background:#FAFAFA;">
+      <div class="card-title">📢 Pelapor</div>
+      <p>Nama: <b>${c.reporter.anonymous ? '🔒 ANONIM' : c.reporter.name}</b> (${c.reporter.relation})</p>
+      ${!c.reporter.anonymous && c.reporter.contact ? `<p>Kontak: ${c.reporter.contact}</p>` : ''}
+    </div>
+
+    <div class="card" style="box-shadow:none;padding:14px;background:#FAFAFA;">
+      <div class="card-title">📝 Kronologi</div>
+      <p style="white-space:pre-wrap;">${escapeHtml(c.description)}</p>
+    </div>
+
+    <h4 style="margin-top:16px;color:var(--maroon-dark);">🕓 Timeline Penanganan</h4>
+    <div class="timeline">
+      ${c.timeline.map(t => `
+        <div class="timeline-item">
+          <div class="t-time">${formatDate(t.ts)}</div>
+          <div class="t-title">${t.title}</div>
+          <div class="t-desc">${t.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  // ASESMEN FORM (hanya jika status Baru/Verifikasi/Asesmen)
+  if (['Baru','Verifikasi','Asesmen'].includes(c.status)) {
+    html += `
+      <hr style="margin:16px 0;border:none;border-top:1px dashed var(--border);">
+      <h4 style="color:var(--maroon-dark);margin-bottom:10px;">🩺 Form Asesmen &amp; Klasifikasi</h4>
+      <div class="info-box">Isi penilaian sesuai 7 dasar pengklasifikasi (Halaman 19 Modul). Sistem akan mengklasifikasi risiko secara otomatis.</div>
+      ${renderAssessItem('a1','Risiko terhadap keselamatan (fisik/nyawa)')}
+      ${renderAssessItem('a2','Dampak fisik / psikologis / sosial / materiil')}
+      ${renderAssessItem('a3','Frekuensi &amp; keberlanjutan kejadian')}
+      ${renderAssessItem('a4','Kapasitas sekolah dalam menangani')}
+      ${renderAssessItem('a5','Kebutuhan layanan profesional (medis/psikolog/hukum)')}
+      ${renderAssessItem('a6','Implikasi hukum / perlindungan anak')}
+      ${renderAssessItem('a7','Potensi eskalasi &amp; dampak luas')}
+    `;
+  }
+
+  // INTERVENSI (jika status Asesmen/Intervensi/Monitoring)
+  if (['Asesmen','Intervensi','Monitoring'].includes(c.status)) {
+    html += `
+      <hr style="margin:16px 0;border:none;border-top:1px dashed var(--border);">
+      <h4 style="color:var(--maroon-dark);margin-bottom:10px;">💊 Catatan Intervensi</h4>
+      ${c.interventions.length ? c.interventions.map(i => `
+        <div class="card" style="box-shadow:none;padding:10px;background:#F0F8F7;margin-bottom:8px;">
+          <b style="font-size:13px;">${i.type}</b>
+          <p style="font-size:13px;">${escapeHtml(i.note)}</p>
+          <small style="color:var(--gray);">${formatDate(i.ts)}</small>
+        </div>
+      `).join('') : '<p style="font-size:13px;color:var(--gray);">Belum ada intervensi dicatat.</p>'}
+      <div class="form-group">
+        <label>Jenis Layanan</label>
+        <select id="intType">
+          <option>Konseling Dasar</option>
+          <option>Konseling Intensif</option>
+          <option>Edukasi & Pembinaan</option>
+          <option>Mediasi</option>
+          <option>Pendampingan Psikososial</option>
+          <option>Perlindungan Darurat</option>
+          <option>Rujukan Eksternal</option>
+          <option>Lainnya</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Catatan Intervensi</label>
+        <textarea id="intNote" placeholder="Deskripsi tindakan yang dilakukan..."></textarea>
+      </div>
+    `;
+  }
+
+  // ESCALATION LOG
+  if (c.escalations.length) {
+    html += `
+      <hr style="margin:16px 0;border:none;border-top:1px dashed var(--border);">
+      <h4 style="color:var(--maroon-dark);margin-bottom:10px;">🔺 Riwayat Eskalasi</h4>
+      ${c.escalations.map(e => `<div class="info-box" style="margin-bottom:6px;">
+        <b>Ke: ${e.to}</b> — ${formatDate(e.ts)}<br>${e.reason}
+      </div>`).join('')}
+    `;
+  }
+
+  document.getElementById('modalBody').innerHTML = html;
+
+  // FOOTER ACTIONS
+  const footer = document.getElementById('modalFooter');
+  let actions = [];
+
+  if (['Baru','Verifikasi','Asesmen'].includes(c.status)) {
+    actions.push(`<button class="btn btn-primary" onclick="submitAssessment('${c.id}')">💾 Simpan Asesmen</button>`);
+  }
+  if (['Asesmen','Intervensi','Monitoring'].includes(c.status)) {
+    actions.push(`<button class="btn btn-secondary" onclick="addIntervention('${c.id}')">➕ Tambah Intervensi</button>`);
+  }
+  if (!['Terminasi','Rujukan'].includes(c.status) && currentUser.role !== 'pelapor') {
+    actions.push(`<button class="btn btn-outline btn-sm" onclick="escalate('${c.id}')">🔺 Eskalasi</button>`);
+    actions.push(`<button class="btn btn-outline btn-sm" onclick="closeCase('${c.id}')">✅ Terminasi</button>`);
+  }
+
+  footer.innerHTML = actions.join('');
+
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function renderAssessItem(id, label) {
+  return `<div class="form-group">
+    <label style="font-size:13px;">${label}</label>
+    <select id="${id}">
+      <option value="0">Rendah / Tidak Ada</option>
+      <option value="1">Sedang</option>
+      <option value="2">Tinggi</option>
+    </select>
+  </div>`;
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target.id === 'modalOverlay') closeModal();
+});
+
+/* ============ SUBMIT ASSESSMENT ============ */
+function submitAssessment(id) {
+  const c = cases.find(x => x.id === id);
+  if (!c) return;
+
+  const scores = ['a1','a2','a3','a4','a5','a6','a7'].map(k => parseInt(document.getElementById(k).value) || 0);
+  const total = scores.reduce((a,b) => a+b, 0);
+
+  let risk = 'ringan';
+  if (total >= 10) risk = 'berat';
+  else if (total >= 5) risk = 'sedang';
+
+  c.riskLevel = risk;
+  c.assessments.push({ ts: Date.now(), scores, total, risk });
+  c.status = 'Asesmen';
+
+  // update SLA
+  if (risk === 'berat') c.slaDeadline = Date.now() + 24*3600000;
+  else if (risk === 'sedang') c.slaDeadline = Date.now() + 48*3600000;
+  else c.slaDeadline = Date.now() + 72*3600000;
+
+  c.timeline.push({
+    ts: Date.now(),
+    title: `🩺 Asesmen Selesai — Klasifikasi: ${risk.toUpperCase()}`,
+    desc: `Total skor ${total}/14. SLA diperbarui sesuai tingkat risiko.`
+  });
+
+  saveCases();
+  showToast(`✅ Asesmen tersimpan. Klasifikasi: ${risk.toUpperCase()}`, 'success');
+  openCase(id);
+  renderAll();
+}
+
+/* ============ INTERVENTION ============ */
+function addIntervention(id) {
+  const c = cases.find(x => x.id === id);
+  if (!c) return;
+  const type = document.getElementById('intType').value;
+  const note = document.getElementById('intNote').value.trim();
+  if (!note) { showToast('Catatan intervensi wajib diisi', 'danger'); return; }
+
+  c.interventions.push({ ts: Date.now(), type, note });
+  if (c.status === 'Asesmen') c.status = 'Intervensi';
+  c.timeline.push({ ts: Date.now(), title: `💊 Intervensi: ${type}`, desc: note });
+  saveCases();
+  showToast('✅ Intervensi dicatat', 'success');
+  openCase(id);
+  renderAll();
+}
+
+/* ============ ESCALATE ============ */
+function escalate(id) {
+  const c = cases.find(x => x.id === id);
+  if (!c) return;
+  const target = c.status === 'Baru' || c.status === 'Verifikasi'
+    ? 'Kepala Sekolah' : 'Satgas Pusat';
+  const reason = prompt(`Alasan eskalasi ke ${target}:`);
+  if (!reason) return;
+  c.escalations.push({ ts: Date.now(), to: target, reason });
+  c.timeline.push({ ts: Date.now(), title: `🔺 Eskalasi ke ${target}`, desc: reason });
+  saveCases();
+  showToast('✅ Kasus dieskalasi ke ' + target, 'success');
+  openCase(id);
+}
+
+/* ============ CLOSE CASE ============ */
+function closeCase(id) {
+  const c = cases.find(x => x.id === id);
+  if (!c) return;
+  const note = prompt('Catatan terminasi (tujuan intervensi tercapai, kondisi stabil, dll):');
+  if (!note) return;
+  c.status = 'Terminasi';
+  c.closedAt = Date.now();
+  c.timeline.push({ ts: Date.now(), title: '✅ Terminasi', desc: note });
+  saveCases();
+  showToast('✅ Kasus ditutup (terminasi)', 'success');
+  openCase(id);
+  renderAll();
+}
+
+/* ============ EXPORT CSV ============ */
+function exportCSV() {
+  const rows = [
+    ['ID','Tanggal','Korban','Kelas','Kategori','Risiko','Status','SLA Deadline']
+  ];
+  cases.forEach(c => rows.push([
+    c.id, formatDate(c.createdAt), c.victim.name, c.victim.class || '-',
+    c.category, c.riskLevel, c.status, formatDate(c.slaDeadline)
+  ]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'siap-sr-kasus-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ============ INIT ============ */
+function renderAll() {
+  renderDashboard();
+  renderCases();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  // auto-login jika sudah ada session
+  const u = localStorage.getItem(USER_KEY);
+  if (u) {
+    try {
+      currentUser = JSON.parse(u);
+      selectedRole = currentUser.role;
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      document.getElementById('userAvatar').textContent = currentUser.initial;
+      document.getElementById('userName').textContent = currentUser.name;
+      loadCases();
+      renderAll();
+    } catch(e) { localStorage.removeItem(USER_KEY); }
+  }
+});
 <!-- ============ Firebase SDK via CDN (modular v11) ============ -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
@@ -265,4 +1511,6 @@ window.doLogin = async function() {
   if (!id || !pass) { showToast('NIS/NIP & password wajib diisi', 'danger'); return; }
   await loginWithNISNIP(id, pass, role);
 };
-</script>
+</script> 
+</body>
+</html>
