@@ -193,7 +193,7 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
     <div class="form-group">
       <label>Masuk sebagai</label>
       <select id="loginRole">
-        <option value="siswa">👦 Siswa (NIS)</option>
+        <option value="Murid">👦 Murid (NIS)</option>
         <option value="guru">👨‍🏫 Guru / Tendik (NIP)</option>
         <option value="satgas">🛡️ Satgas SR (NIP)</option>
         <option value="kepsek">🏫 Kepala Sekolah (NIP)</option>
@@ -215,11 +215,12 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
 
     <div id="demoBox" style="margin-top:16px;padding:12px;background:#F8F8F8;border-radius:10px;font-size:11px;color:var(--gray)">
       <b style="color:var(--maroon-dark)">🔑 Akun Demo:</b><br>
-      Siswa: <code>20254</code> / <code>siswa123</code><br>
+      Ketua Murid SRMP A: <code>202541</code> / <code>Murid123</code><br>
+      Ketua Murid SRMP B: <code>202542</code> / <code>Murid123</code><br>
+      Ketua Murid SRD: <code>202543</code> / <code>Murid123</code><br>
       Guru: <code>20252</code> / <code>guru123</code><br>
       Satgas: <code>20253</code> / <code>satgas123</code><br>
       Kepsek: <code>20251</code> / <code>kepsek123</code><br>
-      Kepsek: <code>20250</code> / <code>pusat123</code><br>
       <button class="btn btn-outline btn-sm" style="margin-top:8px;width:100%" onclick="seedDemoAccounts()" id="btnSeed">
         ⚡ Setup Awal (Buat Akun Demo)
       </button>
@@ -291,7 +292,7 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
           <div class="form-group">
             <label>Hubungan dengan Korban</label>
             <select id="rRelation">
-              <option>Siswa</option><option>Orang Tua/Wali</option>
+              <option>Murid</option><option>Orang Tua/Wali</option>
               <option>Guru/Tenaga Kependidikan</option><option>Masyarakat</option><option>Lainnya</option>
             </select>
           </div>
@@ -419,7 +420,7 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
             <input type="text" id="nuNama"></div>
           <div class="form-group"><label>Peran <span class="req">*</span></label>
             <select id="nuRole" onchange="updateIdLabel()">
-              <option value="siswa">Siswa</option>
+              <option value="Murid">Murid</option>
               <option value="guru">Guru / Tendik</option>
               <option value="satgas">Satgas SR</option>
               <option value="kepsek">Kepala Sekolah</option>
@@ -433,7 +434,7 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
             <input type="text" id="nuPassword" placeholder="Min. 6 karakter"></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Kelas (khusus siswa)</label>
+          <div class="form-group"><label>Kelas (khusus Murid)</label>
             <input type="text" id="nuKelas" placeholder="X-A / Asrama Putri"></div>
         </div>
         <button class="btn btn-primary" onclick="addUser()" id="btnAddUser">💾 Simpan Akun</button>
@@ -650,11 +651,12 @@ async function seedDemoAccounts() {
   btn.disabled = true; btn.innerHTML = '<span class="loader" style="border-top-color:#7A1C2E"></span> Membuat akun...';
 
   const demo = [
-    { nama: 'Siswa',           nis: '20254',   nip: null,        password: 'siswa123',  role: 'siswa',  kelas: 'X-A' },
-    { nama: 'Guru', nis: null,        nip: '20252', password: 'guru123',   role: 'guru',   kelas: null },
-    { nama: 'Satgas', nis: null,      nip: '20253', password: 'satgas123', role: 'satgas', kelas: null },
-    { nama: 'Kepsek',  nis: null,        nip: '20251', password: 'kepsek123', role: 'kepsek', kelas: null },
-    { nama: 'Pusat', nis: null,      nip: '20250', password: 'pusat123',  role: 'pusat',  kelas: null }
+    { nama: 'Murid',           nis: '202541',   nip: null,        password: 'Murid123',  role: 'Ketua Murid',  kelas: 'SRMP A' },
+    { nama: 'Murid',           nis: '202542',   nip: null,        password: 'Murid123',  role: 'Ketua Murid',  kelas: 'SRMP B' },
+    { nama: 'Murid',           nis: '202543',   nip: null,        password: 'Murid123',  role: 'Ketua Murid',  kelas: 'SRD' },
+    { nama: 'Guru', nis: null,        nip: '20252', password: 'guru123',   role: 'Guru',   kelas: null },
+    { nama: 'Satgas', nis: null,      nip: '20253', password: 'satgas123', role: 'Satgas', kelas: null },
+    { nama: 'Kepsek',  nis: null,        nip: '20251', password: 'kepsek123', role: 'Kepsek', kelas: null }
   ];
 
   try {
@@ -1128,7 +1130,7 @@ function exportCSV() {
 // ============ ADMIN USERS ============
 function updateIdLabel() {
   const role = document.getElementById('nuRole').value;
-  document.getElementById('nuIdLabel').innerHTML = (role === 'siswa' ? 'NIS' : 'NIP') + ' <span class="req">*</span>';
+  document.getElementById('nuIdLabel').innerHTML = (role === 'Murid' ? 'NIS' : 'NIP') + ' <span class="req">*</span>';
 }
 
 async function addUser() {
@@ -1150,8 +1152,8 @@ async function addUser() {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(db, 'users', cred.user.uid), {
         nama, role, kelas: kelas || null,
-        nis: role === 'siswa' ? id : null,
-        nip: role !== 'siswa' ? id : null,
+        nis: role === 'Murid' ? id : null,
+        nip: role !== 'Murid' ? id : null,
         active: true, createdAt: serverTimestamp()
       });
       // Logout user yang baru dibuat (agar admin tetap login)
@@ -1162,12 +1164,12 @@ async function addUser() {
       setTimeout(() => location.reload(), 1500);
       return;
     } else {
-      const dup = users.find(u => (role === 'siswa' ? u.nis === id : u.nip === id));
+      const dup = users.find(u => (role === 'Murid' ? u.nis === id : u.nip === id));
       if (dup) { showToast('NIS/NIP sudah terdaftar', 'danger'); return; }
       users.push({
         nama, role, kelas: kelas || null,
-        nis: role === 'siswa' ? id : null,
-        nip: role !== 'siswa' ? id : null,
+        nis: role === 'Murid' ? id : null,
+        nip: role !== 'Murid' ? id : null,
         password, active: true, createdAt: Date.now()
       });
       saveLocalUsers();
