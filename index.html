@@ -3,24 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIAP SR v2.0 — Sekolah Rakyat 39 Garut</title>
-<meta name="description" content="Sistem Informasi Aksi Perlindungan Peserta Didik - Sekolah Rakyat Terintegrasi 39 Garut">
+<title>SIAP SR — Sekolah Rakyat 39 Garut</title>
 <style>
 :root{
-  --maroon:#7A1C2E; --maroon-dark:#5A1322; --maroon-light:#A83048;
-  --orange:#E8A33D; --orange-light:#F5C878;
-  --teal:#2D7A78; --red:#C0392B; --green:#27AE60; --blue:#2C5F8D;
-  --cream:#FDF6EE; --peach:#F8E5D6; --gray:#6B7280; --dark:#1F2937;
-  --border:#E5E7EB;
-  --shadow:0 2px 8px rgba(122,28,46,.08);
-  --shadow-lg:0 10px 30px rgba(122,28,46,.15);
+  --maroon:#7A1C2E; --maroon-dark:#5A1322; --orange:#E8A33D; --orange-light:#F5C878;
+  --teal:#2D7A78; --red:#C0392B; --green:#27AE60; --cream:#FDF6EE; --peach:#F8E5D6;
+  --gray:#6B7280; --dark:#1F2937; --border:#E5E7EB;
+  --shadow:0 2px 8px rgba(122,28,46,.08); --shadow-lg:0 10px 30px rgba(122,28,46,.15);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--cream);color:var(--dark);line-height:1.6;min-height:100vh}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--dark);line-height:1.6;min-height:100vh}
 
-/* ============ LOGIN ============ */
+/* LOGIN */
 #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;
-  background:linear-gradient(135deg,#7A1C2E 0%,#5A1322 50%,#3D0D18 100%);padding:20px}
+  background:linear-gradient(135deg,#7A1C2E,#5A1322 50%,#3D0D18);padding:20px}
 .login-card{background:#fff;border-radius:20px;padding:36px;max-width:440px;width:100%;box-shadow:var(--shadow-lg)}
 .login-logo{text-align:center;margin-bottom:22px}
 .login-logo .badge{display:inline-block;background:var(--maroon);color:#fff;padding:8px 20px;border-radius:30px;
@@ -28,7 +24,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 .login-logo h1{font-size:23px;color:var(--maroon-dark);margin:0}
 .login-logo p{color:var(--gray);font-size:13px;margin-top:6px}
 
-/* ============ LAYOUT ============ */
+/* LAYOUT */
 #app{display:none}
 header.app-header{background:var(--maroon);color:#fff;padding:12px 24px;display:flex;align-items:center;
   justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:12px}
@@ -42,6 +38,10 @@ header.app-header{background:var(--maroon);color:#fff;padding:12px 24px;display:
   display:flex;align-items:center;justify-content:center;font-weight:700}
 .btn-logout{background:rgba(255,255,255,.15);color:#fff;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px}
 .btn-logout:hover{background:rgba(255,255,255,.25)}
+.cloud-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);
+  padding:4px 10px;border-radius:20px;font-size:11px}
+.cloud-badge.on::before{content:'☁️';margin-right:2px}
+.cloud-badge.off::before{content:'💾';margin-right:2px}
 
 nav.tabs{background:#fff;border-bottom:2px solid var(--border);display:flex;overflow-x:auto;padding:0 16px;
   position:sticky;top:66px;z-index:99}
@@ -55,11 +55,11 @@ main{padding:24px;max-width:1200px;margin:0 auto}
 .tab-panel.active{display:block;animation:fadeIn .3s}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-h2.section-title{color:var(--maroon-dark);font-size:22px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+h2.section-title{color:var(--maroon-dark);font-size:22px;margin-bottom:4px}
 p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
 
 .card{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
-.card-title{font-size:15px;font-weight:700;color:var(--maroon-dark);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title{font-size:15px;font-weight:700;color:var(--maroon-dark);margin-bottom:12px}
 
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
 .stat-card{background:#fff;border-radius:14px;padding:18px;border-left:5px solid var(--maroon);box-shadow:var(--shadow)}
@@ -94,6 +94,7 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
 .btn-danger{background:var(--red);color:#fff}
 .btn-sm{padding:6px 12px;font-size:12px}
 .btn-block{width:100%;justify-content:center}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 
 .filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .filter-bar input,.filter-bar select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit}
@@ -164,11 +165,12 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
 #toast.success{background:var(--green)}
 #toast.danger{background:var(--red)}
 
-.role-hint{font-size:11px;color:var(--gray);margin-top:4px;font-style:italic}
+.loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 @media(max-width:640px){
-  main{padding:14px}
-  header.app-header{padding:10px 14px}
+  main{padding:14px} header.app-header{padding:10px 14px}
   .header-brand h1{font-size:14px}
   .stat-grid{grid-template-columns:1fr 1fr}
   .stat-card .value{font-size:24px}
@@ -179,11 +181,11 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
 </head>
 <body>
 
-<!-- ================= LOGIN ================= -->
+<!-- ============ LOGIN ============ -->
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <div class="badge">SIAP SR v2.0</div>
+      <div class="badge">SIAP SR</div>
       <h1>Sekolah Rakyat 39 Garut</h1>
       <p>Sistem Informasi Aksi Perlindungan Peserta Didik</p>
     </div>
@@ -192,32 +194,33 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
       <label>Masuk sebagai</label>
       <select id="loginRole">
         <option value="siswa">👦 Siswa (NIS)</option>
-        <option value="guru">👨‍🏫 Guru / Tenaga Kependidikan (NIP)</option>
+        <option value="guru">👨‍🏫 Guru / Tendik (NIP)</option>
         <option value="satgas">🛡️ Satgas SR (NIP)</option>
         <option value="kepsek">🏫 Kepala Sekolah (NIP)</option>
         <option value="pusat">🏛️ Satgas Pusat (NIP)</option>
       </select>
     </div>
-
     <div class="form-group">
       <label>NIS / NIP <span class="req">*</span></label>
       <input id="loginId" type="text" inputmode="numeric" placeholder="Contoh: 2024001">
     </div>
-
     <div class="form-group">
       <label>Password <span class="req">*</span></label>
-      <input id="loginPassword" type="password" placeholder="••••••••">
+      <input id="loginPassword" type="password" placeholder="••••••••" onkeypress="if(event.key==='Enter')doLogin()">
     </div>
 
-    <button class="btn btn-primary btn-block" onclick="doLogin()">🔐 Masuk</button>
+    <button class="btn btn-primary btn-block" id="btnLogin" onclick="doLogin()">🔐 Masuk</button>
 
-    <div style="margin-top:18px;padding:12px;background:#F8F8F8;border-radius:10px;font-size:11px;color:var(--gray)">
+    <div id="modeInfo" style="margin-top:14px"></div>
+
+    <div id="demoBox" style="margin-top:16px;padding:12px;background:#F8F8F8;border-radius:10px;font-size:11px;color:var(--gray)">
       <b style="color:var(--maroon-dark)">🔑 Akun Demo:</b><br>
       Siswa: <code>2024001</code> / <code>siswa123</code><br>
-      Guru: <code>198501011</code> / <code>guru123</code><br>
       Satgas: <code>198501012</code> / <code>satgas123</code><br>
       Kepsek: <code>198501013</code> / <code>kepsek123</code><br>
-      Pusat: <code>198501014</code> / <code>pusat123</code>
+      <button class="btn btn-outline btn-sm" style="margin-top:8px;width:100%" onclick="seedDemoAccounts()" id="btnSeed">
+        ⚡ Setup Awal (Buat Akun Demo)
+      </button>
     </div>
     <p style="font-size:11px;color:var(--gray);text-align:center;margin-top:14px">
       🔒 Dilindungi sesuai Child Safeguarding Policy
@@ -225,17 +228,18 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
   </div>
 </div>
 
-<!-- ================= APP ================= -->
+<!-- ============ APP ============ -->
 <div id="app">
   <header class="app-header">
     <div class="header-brand">
       <div class="logo">SR</div>
       <div>
         <h1>SIAP SR</h1>
-        <small>Sekolah Rakyat Terintegrasi 39 Garut</small>
+        <small>Sekolah Rakyat 39 Garut</small>
       </div>
     </div>
     <div class="header-user">
+      <span class="cloud-badge" id="cloudBadge">Mode</span>
       <div class="avatar" id="userAvatar">?</div>
       <span class="uname" id="userName">-</span>
       <button class="btn-logout" onclick="logout()">Keluar</button>
@@ -293,7 +297,7 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
         <div class="form-row">
           <div class="form-group">
             <label>Kontak (HP/Email)</label>
-            <input type="text" id="rContact" placeholder="0812xxx / email@contoh.com">
+            <input type="text" id="rContact" placeholder="0812xxx / email">
           </div>
           <div class="form-group" style="display:flex;align-items:flex-end">
             <div class="checkbox-group" style="padding-bottom:10px">
@@ -307,56 +311,44 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
       <div class="card">
         <div class="card-title">Data Korban</div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Nama Korban <span class="req">*</span></label>
-            <input type="text" id="vName" required>
-          </div>
-          <div class="form-group">
-            <label>Kelas / Asrama</label>
-            <input type="text" id="vClass" placeholder="X-A / Asrama Putri">
-          </div>
+          <div class="form-group"><label>Nama Korban <span class="req">*</span></label>
+            <input type="text" id="vName"></div>
+          <div class="form-group"><label>Kelas / Asrama</label>
+            <input type="text" id="vClass" placeholder="X-A / Asrama Putri"></div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">Detail Kasus</div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Kategori <span class="req">*</span></label>
-            <select id="cCategory" required>
+          <div class="form-group"><label>Kategori <span class="req">*</span></label>
+            <select id="cCategory">
               <option value="">-- Pilih --</option>
               <option>Kekerasan Fisik</option><option>Kekerasan Psikis</option>
               <option>Kekerasan Seksual</option><option>Perundungan (Bullying)</option>
               <option>Diskriminasi</option><option>Masalah Keluarga</option>
               <option>Masalah Akademik</option><option>Kesehatan Mental</option>
               <option>Lainnya</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Tanggal Kejadian</label>
-            <input type="date" id="cDate">
-          </div>
+            </select></div>
+          <div class="form-group"><label>Tanggal Kejadian</label>
+            <input type="date" id="cDate"></div>
         </div>
-        <div class="form-group">
-          <label>Kronologi <span class="req">*</span></label>
-          <textarea id="cDesc" placeholder="Jelaskan apa, kapan, di mana, siapa terlibat..." required></textarea>
-        </div>
-        <div class="form-group">
-          <label>Indikasi Darurat?</label>
+        <div class="form-group"><label>Kronologi <span class="req">*</span></label>
+          <textarea id="cDesc" placeholder="Jelaskan apa, kapan, di mana, siapa terlibat..."></textarea></div>
+        <div class="form-group"><label>Indikasi Darurat?</label>
           <select id="cUrgent">
             <option value="tidak">Tidak — Situasi terkendali</option>
             <option value="ya">Ya — Butuh perlindungan segera</option>
-          </select>
-        </div>
+          </select></div>
       </div>
 
-      <button class="btn btn-primary btn-block" onclick="submitReport()">🚀 Kirim Laporan</button>
+      <button class="btn btn-primary btn-block" onclick="submitReport()" id="btnSubmitReport">🚀 Kirim Laporan</button>
     </section>
 
     <!-- DAFTAR KASUS -->
     <section id="tab-kasus" class="tab-panel">
       <h2 class="section-title">📋 Daftar Kasus</h2>
-      <p class="section-sub">Kelola & pantau seluruh kasus</p>
+      <p class="section-sub">Kelola &amp; pantau seluruh kasus</p>
 
       <div class="filter-bar">
         <input type="text" id="fSearch" placeholder="🔍 Cari ID / nama / kategori..." oninput="renderCases()">
@@ -381,88 +373,68 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
     <section id="tab-panduan" class="tab-panel">
       <h2 class="section-title">📖 Panduan</h2>
       <p class="section-sub">Referensi Modul 5 Pencegahan dan Penanganan Kasus</p>
-
-      <div class="card">
-        <div class="card-title">🎯 Arah Kebijakan Utama</div>
-        <p><b>AMAN</b> — Lingkungan sekolah aman bagi peserta didik.</p>
+      <div class="card"><div class="card-title">🎯 Arah Kebijakan Utama</div>
+        <p><b>AMAN</b> — Lingkungan sekolah aman.</p>
         <p><b>RAMAH ANAK</b> — Kepentingan terbaik &amp; hak anak.</p>
-        <p><b>INKLUSIF & KONDUSIF</b> — Disiplin positif & anti-kekerasan.</p>
+        <p><b>INKLUSIF &amp; KONDUSIF</b> — Disiplin positif &amp; anti-kekerasan.</p>
       </div>
-
-      <div class="card">
-        <div class="card-title">🛡️ 7 Prinsip Pencegahan & Penanganan</div>
+      <div class="card"><div class="card-title">🛡️ 7 Prinsip</div>
         <ol style="padding-left:22px;font-size:14px">
           <li>Non-diskriminasi</li><li>Kepentingan terbaik peserta didik</li>
-          <li>Partisipasi peserta didik</li><li>Harkat & martabat</li>
-          <li>Perlindungan, kerahasiaan & keselamatan</li>
-          <li>Keadilan & kesetaraan gender</li><li>Keberlanjutan pendidikan</li>
+          <li>Partisipasi peserta didik</li><li>Harkat &amp; martabat</li>
+          <li>Perlindungan, kerahasiaan &amp; keselamatan</li>
+          <li>Keadilan &amp; kesetaraan gender</li><li>Keberlanjutan pendidikan</li>
         </ol>
       </div>
-
-      <div class="card">
-        <div class="card-title">⏱️ Batas Waktu (SLA)</div>
+      <div class="card"><div class="card-title">⏱️ Batas Waktu (SLA)</div>
         <p><span class="badge badge-berat">Berat/Kritis</span> ≤ 1 × 24 jam</p>
         <p><span class="badge badge-sedang">Sedang</span> ≤ 2 × 24 jam</p>
         <p><span class="badge badge-ringan">Ringan</span> Sesuai kebutuhan</p>
       </div>
-
-      <div class="card">
-        <div class="card-title">🔺 Wajib Eskalasi ke Satgas Pusat</div>
+      <div class="card"><div class="card-title">🔺 Wajib Eskalasi ke Satgas Pusat</div>
         <ol style="padding-left:22px;font-size:14px">
-          <li>Melibatkan pegawai / guru / tenaga kependidikan</li>
+          <li>Melibatkan pegawai/guru/tendik</li>
           <li>Perhatian publik / risiko reputasi</li>
-          <li>Berpotensi / masuk ranah hukum</li>
+          <li>Potensi ranah hukum</li>
           <li>Perlu intervensi profesional / lintas sektor</li>
-          <li>Termasuk risiko tinggi / darurat / kritis</li>
+          <li>Risiko tinggi / darurat / kritis</li>
         </ol>
       </div>
-
-      <div class="card">
-        <div class="card-title">🔗 Alur Penanganan</div>
+      <div class="card"><div class="card-title">🔗 Alur Penanganan</div>
         <p style="font-size:13px">Fasilitasi Akses → Pendekatan Awal → Asesmen → Perencanaan → Intervensi → Monitoring → Terminasi / Rujukan</p>
       </div>
     </section>
 
-    <!-- ADMIN AKUN -->
+    <!-- ADMIN -->
     <section id="tab-admin" class="tab-panel">
       <h2 class="section-title">⚙️ Admin Akun</h2>
-      <p class="section-sub">Kelola akun pengguna aplikasi (khusus Kepsek &amp; Satgas Pusat)</p>
+      <p class="section-sub">Kelola akun pengguna (khusus Kepsek &amp; Satgas Pusat)</p>
 
       <div class="card">
         <div class="card-title">➕ Tambah Akun Baru</div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Nama Lengkap <span class="req">*</span></label>
-            <input type="text" id="nuNama" required>
-          </div>
-          <div class="form-group">
-            <label>Peran <span class="req">*</span></label>
+          <div class="form-group"><label>Nama Lengkap <span class="req">*</span></label>
+            <input type="text" id="nuNama"></div>
+          <div class="form-group"><label>Peran <span class="req">*</span></label>
             <select id="nuRole" onchange="updateIdLabel()">
               <option value="siswa">Siswa</option>
               <option value="guru">Guru / Tendik</option>
               <option value="satgas">Satgas SR</option>
               <option value="kepsek">Kepala Sekolah</option>
               <option value="pusat">Satgas Pusat</option>
-            </select>
-          </div>
+            </select></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label id="nuIdLabel">NIS <span class="req">*</span></label>
-            <input type="text" id="nuId" inputmode="numeric" required>
-          </div>
-          <div class="form-group">
-            <label>Password <span class="req">*</span></label>
-            <input type="text" id="nuPassword" placeholder="Min. 6 karakter" required>
-          </div>
+          <div class="form-group"><label id="nuIdLabel">NIS <span class="req">*</span></label>
+            <input type="text" id="nuId" inputmode="numeric"></div>
+          <div class="form-group"><label>Password <span class="req">*</span></label>
+            <input type="text" id="nuPassword" placeholder="Min. 6 karakter"></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Kelas (khusus siswa)</label>
-            <input type="text" id="nuKelas" placeholder="X-A / Asrama Putri">
-          </div>
+          <div class="form-group"><label>Kelas (khusus siswa)</label>
+            <input type="text" id="nuKelas" placeholder="X-A / Asrama Putri"></div>
         </div>
-        <button class="btn btn-primary" onclick="addUser()">💾 Simpan Akun</button>
+        <button class="btn btn-primary" onclick="addUser()" id="btnAddUser">💾 Simpan Akun</button>
       </div>
 
       <div class="card">
@@ -487,39 +459,72 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
 
 <div id="toast"></div>
 
+<!-- ============================================================
+     FIREBASE CONFIG — GANTI DENGAN PUNYA ANDA
+     Jika dibiarkan kosong, aplikasi otomatis berjalan di mode demo (localStorage)
+     ============================================================ -->
 <script>
-/* ============================================================
-   SIAP SR v2.0 — Single File App
-   Data disimpan di localStorage (mode demo).
-   Untuk produksi: ganti fungsi dbSave/dbLoad dengan Firestore.
-   ============================================================ */
-
-const KEYS = {
-  CASES: 'siap_sr_cases_v2',
-  USERS: 'siap_sr_users_v2',
-  SESSION: 'siap_sr_session_v2'
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyA2XIRkCAHjTY4oD4q0CHLExO21BXgXs8Y",
+  authDomain: "siap-sr-39-garut.firebaseapp.com",
+  projectId: "siap-sr-39-garut",
+  storageBucket: "siap-sr-39-garut.firebasestorage.app",
+  messagingSenderId: "475082566497",
+  appId: "1:475082566497:web:e42a538131dedcbabdb320"
 };
+</script>
 
+<!-- ============================================================
+     APLIKASI SIAP SR
+     ============================================================ -->
+<script type="module">
+// ============ IMPORTS (Firebase Modular v11) ============
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
+import {
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  signOut, onAuthStateChanged
+} from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+import {
+  getFirestore, collection, doc, addDoc, updateDoc, setDoc, getDoc, getDocs,
+  onSnapshot, query, orderBy, serverTimestamp, where
+} from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
+
+// ============ STATE ============
+let FIREBASE_ON = false;
+let fbApp = null, auth = null, db = null;
 let currentUser = null;
 let cases = [];
 let users = [];
+let unsubscribeCases = null;
+let unsubscribeUsers = null;
 
-/* ============ UTIL ============ */
+const KEYS = {
+  CASES: 'siap_sr_cases',
+  USERS: 'siap_sr_users',
+  SESSION: 'siap_sr_session'
+};
+
+// ============ UTIL ============
 function showToast(msg, type = '') {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = type + ' show';
   clearTimeout(t._to);
-  t._to = setTimeout(() => t.className = type, 3000);
+  t._to = setTimeout(() => t.className = type, 3500);
 }
 function formatDate(ts) {
   if (!ts) return '-';
-  return new Date(ts).toLocaleString('id-ID', {
-    day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-  });
+  const d = typeof ts === 'number' ? new Date(ts) : (ts.toDate ? ts.toDate() : new Date(ts));
+  return d.toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+function tsMillis(ts) {
+  if (!ts) return 0;
+  if (typeof ts === 'number') return ts;
+  if (ts.toDate) return ts.toDate().getTime();
+  return new Date(ts).getTime();
 }
 function timeAgo(ts) {
-  const d = Date.now() - ts, m = Math.floor(d/60000);
+  const d = Date.now() - tsMillis(ts), m = Math.floor(d/60000);
   if (m < 1) return 'baru saja';
   if (m < 60) return m + ' menit lalu';
   const h = Math.floor(m/60);
@@ -535,116 +540,223 @@ function formatRemain(ms) {
 function escapeHtml(s) {
   return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
-function genCaseId() {
-  const y = new Date().getFullYear();
-  return `SR39-${y}-${(cases.length + 1).toString().padStart(4, '0')}`;
-}
+function idToEmail(id) { return `${id}@sr39.local`; }
 
-/* ============ STORAGE ============ */
-function loadData() {
-  try { cases = JSON.parse(localStorage.getItem(KEYS.CASES)) || []; } catch { cases = []; }
-  try { users = JSON.parse(localStorage.getItem(KEYS.USERS)) || []; } catch { users = []; }
-
-  // Seed akun demo jika kosong
-  if (users.length === 0) {
-    users = [
-      { nama: 'Ahmad Fauzi', nis: '2024001', nip: null, password: 'siswa123', role: 'siswa', kelas: 'X-A', active: true, createdAt: Date.now() },
-      { nama: 'Ibu Siti Aminah, S.Pd', nis: null, nip: '198501011', password: 'guru123', role: 'guru', kelas: null, active: true, createdAt: Date.now() },
-      { nama: 'Pak Budi Santoso, S.Psi', nis: null, nip: '198501012', password: 'satgas123', role: 'satgas', kelas: null, active: true, createdAt: Date.now() },
-      { nama: 'Ibu Ratna Dewi, M.Pd', nis: null, nip: '198501013', password: 'kepsek123', role: 'kepsek', kelas: null, active: true, createdAt: Date.now() },
-      { nama: 'Dr. Hendra Wijaya, M.Si', nis: null, nip: '198501014', password: 'pusat123', role: 'pusat', kelas: null, active: true, createdAt: Date.now() }
-    ];
-    saveUsers();
+// ============ FIREBASE INIT ============
+function initFirebase() {
+  const cfg = window.FIREBASE_CONFIG || {};
+  if (!cfg.apiKey || !cfg.projectId) {
+    console.log('ℹ️ Firebase config kosong → mode demo (localStorage).');
+    return false;
+  }
+  try {
+    fbApp = initializeApp(cfg);
+    auth = getAuth(fbApp);
+    db = getFirestore(fbApp);
+    FIREBASE_ON = true;
+    console.log('☁️ Firebase aktif:', cfg.projectId);
+    return true;
+  } catch (e) {
+    console.error('Firebase init error:', e);
+    showToast('⚠️ Firebase gagal diinisialisasi, fallback ke mode demo', 'danger');
+    return false;
   }
 }
-function saveCases() { localStorage.setItem(KEYS.CASES, JSON.stringify(cases)); }
-function saveUsers() { localStorage.setItem(KEYS.USERS, JSON.stringify(users)); }
 
-/* ============ LOGIN ============ */
-function doLogin() {
+// ============ STORAGE (mode demo) ============
+function loadLocal() {
+  try { cases = JSON.parse(localStorage.getItem(KEYS.CASES)) || []; } catch { cases = []; }
+  try { users = JSON.parse(localStorage.getItem(KEYS.USERS)) || []; } catch { users = []; }
+}
+function saveLocalCases() { localStorage.setItem(KEYS.CASES, JSON.stringify(cases)); }
+function saveLocalUsers() { localStorage.setItem(KEYS.USERS, JSON.stringify(users)); }
+
+// ============ AUTH ============
+async function doLogin() {
   const role = document.getElementById('loginRole').value;
   const id = document.getElementById('loginId').value.trim();
   const pass = document.getElementById('loginPassword').value;
-
   if (!id || !pass) { showToast('NIS/NIP & password wajib diisi', 'danger'); return; }
 
+  const btn = document.getElementById('btnLogin');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> Memverifikasi...';
+
+  try {
+    if (FIREBASE_ON) {
+      await loginFirebase(id, pass, role);
+    } else {
+      await loginLocal(id, pass, role);
+    }
+  } catch (e) {
+    console.error(e);
+    const msg = e.message || 'Login gagal.';
+    const clean = msg.replace(/^Firebase:\s*/, '').replace(/\(auth\/[^)]+\)\.?/, '').trim();
+    showToast('❌ ' + (clean || 'NIS/NIP atau password salah'), 'danger');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🔐 Masuk';
+  }
+}
+
+async function loginFirebase(id, password, role) {
+  const email = idToEmail(id);
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  // onAuthStateChanged akan handle render
+  // Verifikasi role cocok
+  const snap = await getDoc(doc(db, 'users', cred.user.uid));
+  if (!snap.exists()) {
+    await signOut(auth);
+    throw new Error('Profil pengguna tidak ditemukan di database.');
+  }
+  const profile = snap.data();
+  if (profile.role !== role) {
+    await signOut(auth);
+    throw new Error(`Akun terdaftar sebagai "${profile.role}", bukan "${role}".`);
+  }
+  if (profile.active === false) {
+    await signOut(auth);
+    throw new Error('Akun tidak aktif. Hubungi Satgas SR.');
+  }
+}
+
+async function loginLocal(id, password, role) {
   const user = users.find(u => {
     if (u.role !== role) return false;
     const matchId = (u.nis === id) || (u.nip === id);
-    return matchId && u.password === pass;
+    return matchId && u.password === password;
   });
-
-  if (!user) { showToast('❌ NIS/NIP atau password salah', 'danger'); return; }
-  if (user.active === false) { showToast('❌ Akun tidak aktif. Hubungi Satgas SR.', 'danger'); return; }
-
-  currentUser = { ...user };
+  if (!user) throw new Error('NIS/NIP atau password salah');
+  if (user.active === false) throw new Error('Akun tidak aktif');
+  currentUser = { uid: 'local_' + id, ...user };
   localStorage.setItem(KEYS.SESSION, JSON.stringify(currentUser));
   enterApp();
 }
 
+async function logout() {
+  if (unsubscribeCases) { unsubscribeCases(); unsubscribeCases = null; }
+  if (unsubscribeUsers) { unsubscribeUsers(); unsubscribeUsers = null; }
+  currentUser = null;
+  if (FIREBASE_ON) { try { await signOut(auth); } catch {} }
+  localStorage.removeItem(KEYS.SESSION);
+  location.reload();
+}
+
+// ============ SEED DEMO ACCOUNTS ============
+async function seedDemoAccounts() {
+  const btn = document.getElementById('btnSeed');
+  btn.disabled = true; btn.innerHTML = '<span class="loader" style="border-top-color:#7A1C2E"></span> Membuat akun...';
+
+  const demo = [
+    { nama: 'Ahmad Fauzi',           nis: '2024001',   nip: null,        password: 'siswa123',  role: 'siswa',  kelas: 'X-A' },
+    { nama: 'Ibu Siti Aminah, S.Pd', nis: null,        nip: '198501011', password: 'guru123',   role: 'guru',   kelas: null },
+    { nama: 'Pak Budi Santoso, S.Psi', nis: null,      nip: '198501012', password: 'satgas123', role: 'satgas', kelas: null },
+    { nama: 'Ibu Ratna Dewi, M.Pd',  nis: null,        nip: '198501013', password: 'kepsek123', role: 'kepsek', kelas: null },
+    { nama: 'Dr. Hendra Wijaya, M.Si', nis: null,      nip: '198501014', password: 'pusat123',  role: 'pusat',  kelas: null }
+  ];
+
+  try {
+    if (FIREBASE_ON) {
+      for (const u of demo) {
+        const id = u.nis || u.nip;
+        const email = idToEmail(id);
+        try {
+          const cred = await createUserWithEmailAndPassword(auth, email, u.password);
+          await setDoc(doc(db, 'users', cred.user.uid), {
+            nama: u.nama, nis: u.nis, nip: u.nip, role: u.role, kelas: u.kelas,
+            active: true, createdAt: serverTimestamp()
+          });
+          await signOut(auth);
+        } catch (e) {
+          if (e.code === 'auth/email-already-in-use') {
+            console.log('ℹ️ Skip (sudah ada):', email);
+          } else throw e;
+        }
+      }
+      showToast('✅ Akun demo berhasil dibuat di Firebase!', 'success');
+    } else {
+      // Mode lokal
+      users = demo.map(u => ({ ...u, active: true, createdAt: Date.now() }));
+      saveLocalUsers();
+      showToast('✅ Akun demo dibuat di localStorage', 'success');
+    }
+  } catch (e) {
+    console.error(e);
+    showToast('❌ Gagal setup: ' + (e.message || e), 'danger');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '⚡ Setup Awal (Buat Akun Demo)';
+  }
+}
+
+// ============ ENTER APP ============
 function enterApp() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('userAvatar').textContent = currentUser.nama.charAt(0).toUpperCase();
+  document.getElementById('userAvatar').textContent = (currentUser.nama || '?').charAt(0).toUpperCase();
   document.getElementById('userName').textContent = `${currentUser.nama} (${currentUser.role})`;
+
+  const badge = document.getElementById('cloudBadge');
+  if (FIREBASE_ON) {
+    badge.className = 'cloud-badge on';
+    badge.textContent = 'Firebase';
+  } else {
+    badge.className = 'cloud-badge off';
+    badge.textContent = 'Local';
+  }
+
   applyRoleUI();
+  startRealtimeListeners();
   renderAll();
 }
 
 function applyRoleUI() {
   const role = currentUser.role;
-  const isStaff = ['satgas','kepsek','pusat'].includes(role);
   const canAdmin = ['kepsek','pusat'].includes(role);
-
   document.querySelectorAll('#navTabs button').forEach(btn => {
     const t = btn.dataset.tab;
-    if (t === 'lapor' && !['siswa','guru','satgas','kepsek'].includes(role)) btn.style.display = 'none';
-    else if (t === 'admin' && !canAdmin) btn.style.display = 'none';
+    if (t === 'admin' && !canAdmin) btn.style.display = 'none';
     else btn.style.display = '';
   });
 }
 
-function logout() {
-  currentUser = null;
-  localStorage.removeItem(KEYS.SESSION);
-  location.reload();
+// ============ REALTIME LISTENERS ============
+function startRealtimeListeners() {
+  if (FIREBASE_ON) {
+    // Cases
+    const q = query(collection(db, 'cases'), orderBy('createdAt', 'desc'));
+    unsubscribeCases = onSnapshot(q, snap => {
+      cases = snap.docs.map(d => ({ id: d.id, ...d.data(), createdAt: tsMillis(d.data().createdAt) }));
+      renderAll();
+    }, err => console.error('Snapshot cases error:', err));
+
+    // Users (untuk admin)
+    unsubscribeUsers = onSnapshot(collection(db, 'users'), snap => {
+      users = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+      renderUsers();
+    }, err => console.error('Snapshot users error:', err));
+  } else {
+    loadLocal();
+    renderAll();
+  }
 }
 
-/* ============ NAV ============ */
-document.getElementById('navTabs').addEventListener('click', e => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
-  document.querySelectorAll('#navTabs button').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-  if (btn.dataset.tab === 'dashboard') renderDashboard();
-  if (btn.dataset.tab === 'kasus') renderCases();
-  if (btn.dataset.tab === 'admin') renderUsers();
-});
-
-/* ============ SUBMIT REPORT ============ */
-function submitReport() {
-  if (!currentUser) return;
+// ============ SUBMIT REPORT ============
+async function submitReport() {
   const vName = document.getElementById('vName').value.trim();
   const cCategory = document.getElementById('cCategory').value;
   const cDesc = document.getElementById('cDesc').value.trim();
-
-  if (!vName || !cCategory || !cDesc) {
-    showToast('Mohon lengkapi kolom bertanda *', 'danger');
-    return;
-  }
+  if (!vName || !cCategory || !cDesc) { showToast('Lengkapi kolom bertanda *', 'danger'); return; }
 
   const now = Date.now();
   const isUrgent = document.getElementById('cUrgent').value === 'ya';
   const slaHours = isUrgent ? 24 : 72;
 
   const newCase = {
-    id: genCaseId(),
     createdAt: now,
     status: 'Baru',
     riskLevel: isUrgent ? 'berat' : 'ringan',
-    reporterUid: currentUser.nip || currentUser.nis || 'anon',
+    reporterUid: currentUser.uid,
     reporterName: document.getElementById('rAnon').checked ? 'ANONIM' : (document.getElementById('rName').value.trim() || currentUser.nama),
     reporterRelation: document.getElementById('rRelation').value,
     reporterContact: document.getElementById('rContact').value.trim(),
@@ -664,25 +776,54 @@ function submitReport() {
       desc: `Dilaporkan oleh ${document.getElementById('rName').value.trim() || 'Anonim'} (${document.getElementById('rRelation').value})`
     }]
   };
+  if (isUrgent) newCase.timeline.push({ ts: now, title: '🚨 Indikasi Darurat', desc: 'SLA 1×24 jam.' });
 
-  if (isUrgent) {
-    newCase.timeline.push({ ts: now, title: '🚨 Indikasi Darurat', desc: 'Butuh perlindungan segera (SLA 1×24 jam).' });
+  const btn = document.getElementById('btnSubmitReport');
+  btn.disabled = true; btn.innerHTML = '<span class="loader"></span> Mengirim...';
+
+  try {
+    if (FIREBASE_ON) {
+      await addDoc(collection(db, 'cases'), newCase);
+    } else {
+      newCase.id = genLocalId();
+      cases.unshift(newCase);
+      saveLocalCases();
+      renderAll();
+    }
+    showToast('✅ Laporan terkirim!', 'success');
+    ['rName','rContact','vName','vClass','cDesc','cDate'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('rAnon').checked = false;
+    document.getElementById('cCategory').value = '';
+    document.getElementById('cUrgent').value = 'tidak';
+    document.querySelector('#navTabs button[data-tab="kasus"]').click();
+  } catch (e) {
+    console.error(e);
+    showToast('❌ Gagal kirim: ' + e.message, 'danger');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🚀 Kirim Laporan';
   }
-
-  cases.unshift(newCase);
-  saveCases();
-  showToast('✅ Laporan terkirim! ID: ' + newCase.id, 'success');
-
-  ['rName','rContact','vName','vClass','cDesc','cDate'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('rAnon').checked = false;
-  document.getElementById('cCategory').value = '';
-  document.getElementById('cUrgent').value = 'tidak';
-
-  renderAll();
-  document.querySelector('#navTabs button[data-tab="kasus"]').click();
 }
 
-/* ============ DASHBOARD ============ */
+function genLocalId() {
+  const y = new Date().getFullYear();
+  return `SR39-${y}-${(cases.length + 1).toString().padStart(4, '0')}`;
+}
+
+// ============ UPDATE CASE (Firestore atau local) ============
+async function updateCase(caseId, patch) {
+  if (FIREBASE_ON) {
+    await updateDoc(doc(db, 'cases', caseId), patch);
+    // onSnapshot akan refresh
+  } else {
+    const c = cases.find(x => x.id === caseId);
+    if (c) Object.assign(c, patch);
+    saveLocalCases();
+    renderAll();
+  }
+}
+
+// ============ RENDER: DASHBOARD ============
 function renderDashboard() {
   const total = cases.length;
   const baru = cases.filter(c => c.status === 'Baru').length;
@@ -693,10 +834,10 @@ function renderDashboard() {
   }).length;
 
   document.getElementById('statGrid').innerHTML = `
-    <div class="stat-card"><div class="label">Total Kasus</div><div class="value">${total}</div><div class="desc">Seluruh laporan</div></div>
-    <div class="stat-card orange"><div class="label">Kasus Baru</div><div class="value">${baru}</div><div class="desc">Menunggu verifikasi</div></div>
+    <div class="stat-card"><div class="label">Total</div><div class="value">${total}</div><div class="desc">Semua laporan</div></div>
+    <div class="stat-card orange"><div class="label">Baru</div><div class="value">${baru}</div><div class="desc">Menunggu verifikasi</div></div>
     <div class="stat-card teal"><div class="label">Dalam Proses</div><div class="value">${proses}</div><div class="desc">Asesmen / intervensi</div></div>
-    <div class="stat-card red"><div class="label">⚠️ Mendekati SLA</div><div class="value">${darurat}</div><div class="desc">Butuh tindakan segera</div></div>
+    <div class="stat-card red"><div class="label">⚠️ SLA Kritis</div><div class="value">${darurat}</div><div class="desc">Butuh tindakan</div></div>
   `;
 
   const urgent = cases.filter(c => !['Terminasi','Rujukan'].includes(c.status))
@@ -708,9 +849,9 @@ function renderDashboard() {
     ue.innerHTML = urgent.map(c => {
       const r = c.slaDeadline - Date.now();
       const cls = r < 0 ? 'risk-berat' : (r < 6*3600000 ? 'risk-sedang' : 'risk-ringan');
-      return `<div class="case-item ${cls}" onclick="openCase('${c.id}')">
+      return `<div class="case-item ${cls}" onclick="window.openCase('${c.id}')">
         <div class="case-header">
-          <div><div class="case-id">${c.id}</div><div class="case-title">${c.category} — ${c.victim.name}</div></div>
+          <div><div class="case-id">${c.id}</div><div class="case-title">${escapeHtml(c.category)} — ${escapeHtml(c.victim?.name || '-')}</div></div>
           <span class="badge badge-${c.riskLevel}">${c.riskLevel}</span>
         </div>
         <div class="case-meta">${r < 0 ? '⛔ Melewati SLA' : '⏱️ Sisa: ' + formatRemain(r)} • Status: ${c.status}</div>
@@ -739,17 +880,16 @@ function barChart(label, val, max, color) {
   </div>`;
 }
 
-/* ============ CASES LIST ============ */
+// ============ RENDER: CASES ============
 function renderCases() {
   const q = (document.getElementById('fSearch').value || '').toLowerCase();
   const fs = document.getElementById('fStatus').value;
   const fr = document.getElementById('fRisk').value;
-
   let list = cases.filter(c => {
     if (fs && c.status !== fs) return false;
     if (fr && c.riskLevel !== fr) return false;
     if (q) {
-      const hay = (c.id + ' ' + c.victim.name + ' ' + c.category + ' ' + c.description).toLowerCase();
+      const hay = ((c.id||'') + ' ' + (c.victim?.name||'') + ' ' + (c.category||'') + ' ' + (c.description||'')).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -760,26 +900,25 @@ function renderCases() {
     el.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Belum ada kasus yang sesuai.</p></div>';
     return;
   }
-
   el.innerHTML = list.map(c => {
     const r = c.slaDeadline - Date.now();
     const isDone = ['Terminasi','Rujukan'].includes(c.status);
-    return `<div class="case-item risk-${c.riskLevel}" onclick="openCase('${c.id}')">
+    return `<div class="case-item risk-${c.riskLevel}" onclick="window.openCase('${c.id}')">
       <div class="case-header">
-        <div><div class="case-id">${c.id}</div><div class="case-title">${c.category}</div></div>
+        <div><div class="case-id">${c.id}</div><div class="case-title">${escapeHtml(c.category)}</div></div>
         <div style="text-align:right">
           <span class="badge badge-${c.riskLevel}">${c.riskLevel}</span>
           <span class="badge badge-status">${c.status}</span>
         </div>
       </div>
-      <div class="case-meta">👤 <b>${escapeHtml(c.victim.name)}</b>${c.victim.class ? ' • ' + escapeHtml(c.victim.class) : ''}</div>
-      <div class="case-desc">${escapeHtml(c.description)}</div>
+      <div class="case-meta">👤 <b>${escapeHtml(c.victim?.name || '-')}</b>${c.victim?.class ? ' • ' + escapeHtml(c.victim.class) : ''}</div>
+      <div class="case-desc">${escapeHtml(c.description || '')}</div>
       <div class="case-meta">🕒 ${timeAgo(c.createdAt)} • ${isDone ? '✅ Selesai' : '⏱️ SLA: ' + formatRemain(r)}</div>
     </div>`;
   }).join('');
 }
 
-/* ============ MODAL DETAIL ============ */
+// ============ MODAL ============
 function openCase(id) {
   const c = cases.find(x => x.id === id);
   if (!c) return;
@@ -795,38 +934,36 @@ function openCase(id) {
     ${!isDone ? `<div class="sla-bar ${slaCls}">
       <div>⏱️ <b>SLA</b> — Status: <b>${c.status}</b></div>
       <div class="sla-time">${r < 0 ? '⛔ Terlampaui' : formatRemain(r)}</div>
-    </div>` : `<div class="info-box success">✅ Kasus telah <b>${c.status}</b>.</div>`}
+    </div>` : `<div class="info-box success">✅ Kasus <b>${c.status}</b>.</div>`}
 
     <div class="form-row">
       <div><p style="font-size:12px;color:var(--gray)">RISIKO</p>
         <span class="badge badge-${c.riskLevel}" style="font-size:13px;padding:6px 14px">${c.riskLevel.toUpperCase()}</span></div>
       <div><p style="font-size:12px;color:var(--gray)">KATEGORI</p>
-        <p style="font-weight:700">${c.category}</p></div>
+        <p style="font-weight:700">${escapeHtml(c.category)}</p></div>
     </div>
-
     <hr style="margin:14px 0;border:none;border-top:1px solid var(--border)">
 
     <div class="card" style="box-shadow:none;padding:14px;background:#FAFAFA">
       <div class="card-title">👤 Data Korban</div>
-      <p>Nama: <b>${escapeHtml(c.victim.name)}</b></p>
-      <p>Kelas/Asrama: ${escapeHtml(c.victim.class || '-')}</p>
-      ${c.incidentDate ? `<p>Tanggal Kejadian: ${c.incidentDate}</p>` : ''}
+      <p>Nama: <b>${escapeHtml(c.victim?.name || '-')}</b></p>
+      <p>Kelas/Asrama: ${escapeHtml(c.victim?.class || '-')}</p>
+      ${c.incidentDate ? `<p>Tanggal: ${c.incidentDate}</p>` : ''}
     </div>
 
     <div class="card" style="box-shadow:none;padding:14px;background:#FAFAFA">
       <div class="card-title">📢 Pelapor</div>
-      <p>Nama: <b>${c.anonymous ? '🔒 ANONIM' : escapeHtml(c.reporterName)}</b> (${c.reporterRelation})</p>
-      ${!c.anonymous && c.reporterContact ? `<p>Kontak: ${escapeHtml(c.reporterContact)}</p>` : ''}
+      <p>Nama: <b>${c.anonymous ? '🔒 ANONIM' : escapeHtml(c.reporterName || '-')}</b> (${escapeHtml(c.reporterRelation || '-')})</p>
     </div>
 
     <div class="card" style="box-shadow:none;padding:14px;background:#FAFAFA">
       <div class="card-title">📝 Kronologi</div>
-      <p style="white-space:pre-wrap">${escapeHtml(c.description)}</p>
+      <p style="white-space:pre-wrap">${escapeHtml(c.description || '')}</p>
     </div>
 
     <h4 style="margin-top:16px;color:var(--maroon-dark)">🕓 Timeline</h4>
     <div class="timeline">
-      ${c.timeline.map(t => `
+      ${(c.timeline || []).map(t => `
         <div class="timeline-item">
           <div class="t-time">${formatDate(t.ts)}</div>
           <div class="t-title">${escapeHtml(t.title)}</div>
@@ -835,12 +972,10 @@ function openCase(id) {
     </div>
   `;
 
-  // Form Asesmen
   if (canHandle && ['Baru','Asesmen'].includes(c.status)) {
     html += `
       <hr style="margin:16px 0;border:none;border-top:1px dashed var(--border)">
-      <h4 style="color:var(--maroon-dark);margin-bottom:10px">🩺 Form Asesmen (7 Dasar Klasifikasi)</h4>
-      <div class="info-box">Skor total menentukan tingkat risiko secara otomatis.</div>
+      <h4 style="color:var(--maroon-dark);margin-bottom:10px">🩺 Form Asesmen (7 Dasar)</h4>
       ${assessItem('a1','Risiko terhadap keselamatan')}
       ${assessItem('a2','Dampak fisik/psikologis/sosial/materiil')}
       ${assessItem('a3','Frekuensi & keberlanjutan')}
@@ -851,12 +986,11 @@ function openCase(id) {
     `;
   }
 
-  // Intervensi
   if (canHandle && ['Asesmen','Intervensi','Monitoring'].includes(c.status)) {
     html += `
       <hr style="margin:16px 0;border:none;border-top:1px dashed var(--border)">
       <h4 style="color:var(--maroon-dark);margin-bottom:10px">💊 Catatan Intervensi</h4>
-      ${c.interventions.length ? c.interventions.map(i => `
+      ${(c.interventions||[]).length ? (c.interventions||[]).map(i => `
         <div class="card" style="box-shadow:none;padding:10px;background:#F0F8F7;margin-bottom:8px">
           <b style="font-size:13px">${escapeHtml(i.type)}</b>
           <p style="font-size:13px">${escapeHtml(i.note)}</p>
@@ -874,33 +1008,30 @@ function openCase(id) {
     `;
   }
 
-  // Riwayat eskalasi
-  if (c.escalations.length) {
+  if ((c.escalations||[]).length) {
     html += `
       <hr style="margin:16px 0;border:none;border-top:1px dashed var(--border)">
       <h4 style="color:var(--maroon-dark);margin-bottom:10px">🔺 Riwayat Eskalasi</h4>
-      ${c.escalations.map(e => `<div class="info-box" style="margin-bottom:6px">
-        <b>Ke: ${e.to}</b> — ${formatDate(e.ts)}<br>${escapeHtml(e.reason)}</div>`).join('')}
+      ${(c.escalations||[]).map(e => `<div class="info-box" style="margin-bottom:6px">
+        <b>Ke: ${escapeHtml(e.to)}</b> — ${formatDate(e.ts)}<br>${escapeHtml(e.reason)}</div>`).join('')}
     `;
   }
 
   document.getElementById('modalBody').innerHTML = html;
 
-  // Footer
   const footer = document.getElementById('modalFooter');
   let acts = [];
   if (canHandle && ['Baru','Asesmen'].includes(c.status)) {
-    acts.push(`<button class="btn btn-primary" onclick="submitAssessment('${c.id}')">💾 Simpan Asesmen</button>`);
+    acts.push(`<button class="btn btn-primary" onclick="window.submitAssessment('${c.id}')">💾 Simpan Asesmen</button>`);
   }
   if (canHandle && ['Asesmen','Intervensi','Monitoring'].includes(c.status)) {
-    acts.push(`<button class="btn btn-secondary" onclick="addIntervention('${c.id}')">➕ Intervensi</button>`);
+    acts.push(`<button class="btn btn-secondary" onclick="window.addIntervention('${c.id}')">➕ Intervensi</button>`);
   }
   if (canHandle && !isDone) {
-    acts.push(`<button class="btn btn-outline btn-sm" onclick="escalate('${c.id}')">🔺 Eskalasi</button>`);
-    acts.push(`<button class="btn btn-outline btn-sm" onclick="closeCase('${c.id}')">✅ Terminasi</button>`);
+    acts.push(`<button class="btn btn-outline btn-sm" onclick="window.escalate('${c.id}')">🔺 Eskalasi</button>`);
+    acts.push(`<button class="btn btn-outline btn-sm" onclick="window.closeCase('${c.id}')">✅ Terminasi</button>`);
   }
   footer.innerHTML = acts.join('');
-
   document.getElementById('modalOverlay').classList.add('active');
 }
 
@@ -914,83 +1045,74 @@ function assessItem(id, label) {
 }
 
 function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
-document.getElementById('modalOverlay').addEventListener('click', e => {
-  if (e.target.id === 'modalOverlay') closeModal();
-});
 
-/* ============ ACTIONS ============ */
-function submitAssessment(id) {
+// ============ ACTIONS ============
+async function submitAssessment(id) {
   const c = cases.find(x => x.id === id);
   if (!c) return;
-  const scores = ['a1','a2','a3','a4','a5','a6','a7'].map(k => parseInt(document.getElementById(k).value) || 0);
+  const scores = ['a1','a2','a3','a4','a5','a6','a7'].map(k => parseInt(document.getElementById(k)?.value || 0));
   const total = scores.reduce((a,b) => a+b, 0);
   let risk = 'ringan';
   if (total >= 10) risk = 'berat';
   else if (total >= 5) risk = 'sedang';
 
-  c.riskLevel = risk;
-  c.status = 'Asesmen';
-  c.slaDeadline = Date.now() + (risk === 'berat' ? 24 : risk === 'sedang' ? 48 : 72) * 3600000;
-  c.assessments.push({ ts: Date.now(), scores, total, risk, by: currentUser.nama });
-  c.timeline.push({
-    ts: Date.now(),
-    title: `🩺 Asesmen — ${risk.toUpperCase()}`,
+  const newSla = Date.now() + (risk === 'berat' ? 24 : risk === 'sedang' ? 48 : 72) * 3600000;
+  const newAssessments = [...(c.assessments||[]), { ts: Date.now(), scores, total, risk, by: currentUser.nama }];
+  const newTimeline = [...(c.timeline||[]), {
+    ts: Date.now(), title: `🩺 Asesmen — ${risk.toUpperCase()}`,
     desc: `Skor ${total}/14. SLA diperbarui.`
+  }];
+
+  await updateCase(id, {
+    riskLevel: risk, status: 'Asesmen', slaDeadline: newSla,
+    assessments: newAssessments, timeline: newTimeline
   });
-  saveCases();
   showToast(`✅ Asesmen: ${risk.toUpperCase()}`, 'success');
   openCase(id);
-  renderAll();
 }
 
-function addIntervention(id) {
+async function addIntervention(id) {
   const c = cases.find(x => x.id === id);
-  if (!c) return;
   const type = document.getElementById('intType').value;
   const note = document.getElementById('intNote').value.trim();
   if (!note) { showToast('Catatan wajib diisi', 'danger'); return; }
 
-  c.interventions.push({ ts: Date.now(), type, note, by: currentUser.nama });
-  if (c.status === 'Asesmen') c.status = 'Intervensi';
-  c.timeline.push({ ts: Date.now(), title: `💊 Intervensi: ${type}`, desc: note });
-  saveCases();
+  const newInterventions = [...(c.interventions||[]), { ts: Date.now(), type, note, by: currentUser.nama }];
+  const newTimeline = [...(c.timeline||[]), { ts: Date.now(), title: `💊 Intervensi: ${type}`, desc: note }];
+  await updateCase(id, {
+    status: c.status === 'Asesmen' ? 'Intervensi' : c.status,
+    interventions: newInterventions, timeline: newTimeline
+  });
   showToast('✅ Intervensi dicatat', 'success');
   openCase(id);
-  renderAll();
 }
 
-function escalate(id) {
+async function escalate(id) {
   const c = cases.find(x => x.id === id);
-  if (!c) return;
   const target = ['Baru'].includes(c.status) ? 'Kepala Sekolah' : 'Satgas Pusat';
   const reason = prompt(`Alasan eskalasi ke ${target}:`);
   if (!reason) return;
-  c.escalations.push({ ts: Date.now(), to: target, reason, by: currentUser.nama });
-  c.timeline.push({ ts: Date.now(), title: `🔺 Eskalasi ke ${target}`, desc: reason });
-  saveCases();
+  const newEsc = [...(c.escalations||[]), { ts: Date.now(), to: target, reason, by: currentUser.nama }];
+  const newTimeline = [...(c.timeline||[]), { ts: Date.now(), title: `🔺 Eskalasi ke ${target}`, desc: reason }];
+  await updateCase(id, { escalations: newEsc, timeline: newTimeline });
   showToast('✅ Dieskalasi ke ' + target, 'success');
   openCase(id);
-  renderAll();
 }
 
-function closeCase(id) {
+async function closeCase(id) {
   const c = cases.find(x => x.id === id);
-  if (!c) return;
   const note = prompt('Catatan terminasi:');
   if (!note) return;
-  c.status = 'Terminasi';
-  c.closedAt = Date.now();
-  c.timeline.push({ ts: Date.now(), title: '✅ Terminasi', desc: note });
-  saveCases();
+  const newTimeline = [...(c.timeline||[]), { ts: Date.now(), title: '✅ Terminasi', desc: note }];
+  await updateCase(id, { status: 'Terminasi', closedAt: Date.now(), timeline: newTimeline });
   showToast('✅ Kasus ditutup', 'success');
   openCase(id);
-  renderAll();
 }
 
-/* ============ EXPORT CSV ============ */
+// ============ EXPORT CSV ============
 function exportCSV() {
   const rows = [['ID','Tanggal','Korban','Kelas','Kategori','Risiko','Status','SLA']];
-  cases.forEach(c => rows.push([c.id, formatDate(c.createdAt), c.victim.name, c.victim.class || '-',
+  cases.forEach(c => rows.push([c.id, formatDate(c.createdAt), c.victim?.name || '-', c.victim?.class || '-',
     c.category, c.riskLevel, c.status, formatDate(c.slaDeadline)]));
   const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1001,46 +1123,75 @@ function exportCSV() {
   URL.revokeObjectURL(a.href);
 }
 
-/* ============ ADMIN USERS ============ */
+// ============ ADMIN USERS ============
 function updateIdLabel() {
   const role = document.getElementById('nuRole').value;
   document.getElementById('nuIdLabel').innerHTML = (role === 'siswa' ? 'NIS' : 'NIP') + ' <span class="req">*</span>';
 }
 
-function addUser() {
+async function addUser() {
   const nama = document.getElementById('nuNama').value.trim();
   const role = document.getElementById('nuRole').value;
   const id = document.getElementById('nuId').value.trim();
   const password = document.getElementById('nuPassword').value;
   const kelas = document.getElementById('nuKelas').value.trim();
 
-  if (!nama || !id || !password) { showToast('Lengkapi semua field *', 'danger'); return; }
+  if (!nama || !id || !password) { showToast('Lengkapi field *', 'danger'); return; }
   if (password.length < 6) { showToast('Password min. 6 karakter', 'danger'); return; }
 
-  const dup = users.find(u => (role === 'siswa' ? u.nis === id : u.nip === id));
-  if (dup) { showToast('NIS/NIP sudah terdaftar', 'danger'); return; }
+  const btn = document.getElementById('btnAddUser');
+  btn.disabled = true; btn.innerHTML = '<span class="loader"></span> Menyimpan...';
 
-  users.push({
-    nama, role, kelas: kelas || null,
-    nis: role === 'siswa' ? id : null,
-    nip: role !== 'siswa' ? id : null,
-    password, active: true, createdAt: Date.now()
-  });
-  saveUsers();
-  showToast('✅ Akun berhasil dibuat', 'success');
-  ['nuNama','nuId','nuPassword','nuKelas'].forEach(i => document.getElementById(i).value = '');
-  renderUsers();
+  try {
+    if (FIREBASE_ON) {
+      const email = idToEmail(id);
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, 'users', cred.user.uid), {
+        nama, role, kelas: kelas || null,
+        nis: role === 'siswa' ? id : null,
+        nip: role !== 'siswa' ? id : null,
+        active: true, createdAt: serverTimestamp()
+      });
+      // Logout user yang baru dibuat (agar admin tetap login)
+      // Catatan: createUserWithEmailAndPassword auto-login, jadi kita harus re-login admin
+      // Solusi: gunakan Firebase Admin SDK (butuh backend) ATAU minta admin login ulang setelah create
+      await signOut(auth);
+      showToast('✅ Akun dibuat. Silakan login kembali sebagai admin.', 'success');
+      setTimeout(() => location.reload(), 1500);
+      return;
+    } else {
+      const dup = users.find(u => (role === 'siswa' ? u.nis === id : u.nip === id));
+      if (dup) { showToast('NIS/NIP sudah terdaftar', 'danger'); return; }
+      users.push({
+        nama, role, kelas: kelas || null,
+        nis: role === 'siswa' ? id : null,
+        nip: role !== 'siswa' ? id : null,
+        password, active: true, createdAt: Date.now()
+      });
+      saveLocalUsers();
+      showToast('✅ Akun dibuat', 'success');
+      ['nuNama','nuId','nuPassword','nuKelas'].forEach(i => document.getElementById(i).value = '');
+      renderUsers();
+    }
+  } catch (e) {
+    console.error(e);
+    showToast('❌ Gagal: ' + (e.message || e), 'danger');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '💾 Simpan Akun';
+  }
 }
 
 function renderUsers() {
   const el = document.getElementById('userList');
+  if (!el) return;
   if (!users.length) { el.innerHTML = '<p style="color:var(--gray);font-size:13px">Belum ada akun.</p>'; return; }
   el.innerHTML = users.map(u => `
-    <div class="case-item" style="cursor:default;border-left-color:var(--${u.role === 'siswa' ? 'teal' : u.role === 'guru' ? 'orange' : 'maroon'})">
+    <div class="case-item" style="cursor:default;border-left-color:var(--maroon)">
       <div class="case-header">
         <div>
           <div class="case-title">${escapeHtml(u.nama)}</div>
-          <div class="case-meta">${u.nis ? 'NIS: ' + u.nis : 'NIP: ' + u.nip}${u.kelas ? ' • ' + u.kelas : ''}</div>
+          <div class="case-meta">${u.nis ? 'NIS: ' + u.nis : 'NIP: ' + (u.nip || '-')}${u.kelas ? ' • ' + u.kelas : ''}</div>
         </div>
         <div style="text-align:right">
           <span class="badge badge-status">${u.role}</span>
@@ -1050,20 +1201,85 @@ function renderUsers() {
     </div>`).join('');
 }
 
-/* ============ RENDER ALL ============ */
+// ============ RENDER ALL ============
 function renderAll() { renderDashboard(); renderCases(); }
 
-/* ============ INIT ============ */
-window.addEventListener('DOMContentLoaded', () => {
-  loadData();
-  const s = localStorage.getItem(KEYS.SESSION);
-  if (s) {
-    try { currentUser = JSON.parse(s); enterApp(); }
-    catch { localStorage.removeItem(KEYS.SESSION); }
-  }
-  // update label saat role berubah
-  document.getElementById('nuRole').addEventListener('change', updateIdLabel);
+// ============ NAV ============
+document.getElementById('navTabs').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#navTabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  if (btn.dataset.tab === 'dashboard') renderDashboard();
+  if (btn.dataset.tab === 'kasus') renderCases();
+  if (btn.dataset.tab === 'admin') renderUsers();
 });
+
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target.id === 'modalOverlay') closeModal();
+});
+
+document.getElementById('nuRole')?.addEventListener('change', updateIdLabel);
+
+// ============ EXPOSE KE WINDOW (untuk onclick HTML) ============
+window.doLogin = doLogin;
+window.logout = logout;
+window.seedDemoAccounts = seedDemoAccounts;
+window.submitReport = submitReport;
+window.openCase = openCase;
+window.closeModal = closeModal;
+window.submitAssessment = submitAssessment;
+window.addIntervention = addIntervention;
+window.escalate = escalate;
+window.closeCase = closeCase;
+window.exportCSV = exportCSV;
+window.addUser = addUser;
+window.updateIdLabel = updateIdLabel;
+
+// ============ INIT ============
+(function init() {
+  const on = initFirebase();
+
+  if (FIREBASE_ON) {
+    // Info mode
+    document.getElementById('modeInfo').innerHTML =
+      '<div class="info-box success" style="font-size:12px;margin:0">☁️ Firebase aktif — data tersinkron realtime</div>';
+
+    // Auth state listener
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('app').style.display = 'none';
+        return;
+      }
+      // Ambil profil dari Firestore
+      try {
+        const snap = await getDoc(doc(db, 'users', user.uid));
+        if (!snap.exists()) { await signOut(auth); return; }
+        const p = snap.data();
+        currentUser = { uid: user.uid, ...p };
+        localStorage.setItem(KEYS.SESSION, JSON.stringify(currentUser));
+        enterApp();
+      } catch (e) {
+        console.error('Load profile error:', e);
+        showToast('❌ Gagal memuat profil', 'danger');
+      }
+    });
+  } else {
+    // Mode demo
+    document.getElementById('modeInfo').innerHTML =
+      '<div class="info-box" style="font-size:12px;margin:0">💾 Mode Demo (localStorage). Isi <code>FIREBASE_CONFIG</code> untuk aktifkan cloud sync.</div>';
+    loadLocal();
+
+    // Cek session
+    const s = localStorage.getItem(KEYS.SESSION);
+    if (s) {
+      try { currentUser = JSON.parse(s); enterApp(); } catch { localStorage.removeItem(KEYS.SESSION); }
+    }
+  }
+})();
 </script>
 </body>
 </html>
