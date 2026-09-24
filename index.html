@@ -193,7 +193,7 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
     <div class="form-group">
       <label>Masuk sebagai</label>
       <select id="loginRole">
-        <option value="Murid">👦 Murid (NIS)</option>
+        <option value="murid">👦 Murid (NIS)</option>
         <option value="guru">👨‍🏫 Guru / Tendik (NIP)</option>
         <option value="satgas">🛡️ Satgas SR (NIP)</option>
         <option value="kepsek">🏫 Kepala Sekolah (NIP)</option>
@@ -215,9 +215,9 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
 
     <div id="demoBox" style="margin-top:16px;padding:12px;background:#F8F8F8;border-radius:10px;font-size:11px;color:var(--gray)">
       <b style="color:var(--maroon-dark)">🔑 Akun Demo:</b><br>
-      Ketua Murid SRMP A: <code>202541</code> / <code>Murid123</code><br>
-      Ketua Murid SRMP B: <code>202542</code> / <code>Murid123</code><br>
-      Ketua Murid SRD: <code>202543</code> / <code>Murid123</code><br>
+      Ketua Murid SRMP A: <code>202541</code> / <code>murid123</code><br>
+      Ketua Murid SRMP B: <code>202542</code> / <code>murid123</code><br>
+      Ketua Murid SRD: <code>202543</code> / <code>murid123</code><br>
       Guru: <code>20252</code> / <code>guru123</code><br>
       Satgas: <code>20253</code> / <code>satgas123</code><br>
       Kepsek: <code>20251</code> / <code>kepsek123</code><br>
@@ -420,7 +420,7 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
             <input type="text" id="nuNama"></div>
           <div class="form-group"><label>Peran <span class="req">*</span></label>
             <select id="nuRole" onchange="updateIdLabel()">
-              <option value="Murid">Murid</option>
+              <option value="murid">Murid</option>
               <option value="guru">Guru / Tendik</option>
               <option value="satgas">Satgas SR</option>
               <option value="kepsek">Kepala Sekolah</option>
@@ -651,9 +651,9 @@ async function seedDemoAccounts() {
   btn.disabled = true; btn.innerHTML = '<span class="loader" style="border-top-color:#7A1C2E"></span> Membuat akun...';
 
   const demo = [
-    { nama: 'Murid',           nis: '202541',   nip: null,        password: 'Murid123',  role: 'Ketua Murid',  kelas: 'SRMP A' },
-    { nama: 'Murid',           nis: '202542',   nip: null,        password: 'Murid123',  role: 'Ketua Murid',  kelas: 'SRMP B' },
-    { nama: 'Murid',           nis: '202543',   nip: null,        password: 'Murid123',  role: 'Ketua Murid',  kelas: 'SRD' },
+    { nama: 'Murid',           nis: '202541',   nip: null,        password: 'murid123',  role: 'Ketua Murid',  kelas: 'SRMP A' },
+    { nama: 'Murid',           nis: '202542',   nip: null,        password: 'murid123',  role: 'Ketua Murid',  kelas: 'SRMP B' },
+    { nama: 'Murid',           nis: '202543',   nip: null,        password: 'murid123',  role: 'Ketua Murid',  kelas: 'SRD' },
     { nama: 'Guru', nis: null,        nip: '20252', password: 'guru123',   role: 'Guru',   kelas: null },
     { nama: 'Satgas', nis: null,      nip: '20253', password: 'satgas123', role: 'Satgas', kelas: null },
     { nama: 'Kepsek',  nis: null,        nip: '20251', password: 'kepsek123', role: 'Kepsek', kelas: null }
