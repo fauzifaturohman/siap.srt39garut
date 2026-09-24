@@ -215,9 +215,11 @@ p.section-sub{color:var(--gray);font-size:14px;margin-bottom:20px}
 
     <div id="demoBox" style="margin-top:16px;padding:12px;background:#F8F8F8;border-radius:10px;font-size:11px;color:var(--gray)">
       <b style="color:var(--maroon-dark)">🔑 Akun Demo:</b><br>
-      Siswa: <code>2024001</code> / <code>siswa123</code><br>
-      Satgas: <code>198501012</code> / <code>satgas123</code><br>
-      Kepsek: <code>198501013</code> / <code>kepsek123</code><br>
+      Siswa: <code>20254</code> / <code>siswa123</code><br>
+      Guru: <code>20252</code> / <code>guru123</code><br>
+      Satgas: <code>20253</code> / <code>satgas123</code><br>
+      Kepsek: <code>20251</code> / <code>kepsek123</code><br>
+      Kepsek: <code>20250</code> / <code>pusat123</code><br>
       <button class="btn btn-outline btn-sm" style="margin-top:8px;width:100%" onclick="seedDemoAccounts()" id="btnSeed">
         ⚡ Setup Awal (Buat Akun Demo)
       </button>
@@ -648,11 +650,11 @@ async function seedDemoAccounts() {
   btn.disabled = true; btn.innerHTML = '<span class="loader" style="border-top-color:#7A1C2E"></span> Membuat akun...';
 
   const demo = [
-    { nama: 'Siswa',           nis: '2026001',   nip: null,        password: 'siswa123',  role: 'siswa',  kelas: 'X-A' },
-    { nama: 'Guru', nis: null,        nip: '2025010101', password: 'guru123',   role: 'guru',   kelas: null },
-    { nama: 'Satgas', nis: null,      nip: '2025010102', password: 'satgas123', role: 'satgas', kelas: null },
-    { nama: 'Kepsek',  nis: null,        nip: '2025010103', password: 'kepsek123', role: 'kepsek', kelas: null },
-    { nama: 'Pusat', nis: null,      nip: '2025010104', password: 'pusat123',  role: 'pusat',  kelas: null }
+    { nama: 'Siswa',           nis: '20254',   nip: null,        password: 'siswa123',  role: 'siswa',  kelas: 'X-A' },
+    { nama: 'Guru', nis: null,        nip: '20252', password: 'guru123',   role: 'guru',   kelas: null },
+    { nama: 'Satgas', nis: null,      nip: '20253', password: 'satgas123', role: 'satgas', kelas: null },
+    { nama: 'Kepsek',  nis: null,        nip: '20251', password: 'kepsek123', role: 'kepsek', kelas: null },
+    { nama: 'Pusat', nis: null,      nip: '20250', password: 'pusat123',  role: 'pusat',  kelas: null }
   ];
 
   try {
